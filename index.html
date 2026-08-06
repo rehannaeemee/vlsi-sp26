@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="EE476: Introduction to VLSI Systems — Department of Electrical Engineering, UET Lahore" name="description"/>
+<meta content="#edfaff" name="theme-color"/>
+<title>EE476 · Introduction to VLSI Systems</title>
+<link href="styles.css" rel="stylesheet"/>
+
+<style>
+/* Hero image replacing the decorative CSS chip illustration */
+.hero-vlsi-image {
+  display: block;
+  width: min(540px, 100%);
+  height: auto;
+  max-height: 560px;
+  object-fit: contain;
+  border-radius: 18px;
+}
+
+
+/* CHIA-inspired white-to-blue gradient background */
+body {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255, 255, 255, 0.98) 0 16%, rgba(255, 255, 255, 0) 42%),
+    radial-gradient(circle at 88% 12%, rgba(111, 174, 255, 0.34) 0, rgba(111, 174, 255, 0) 42%),
+    linear-gradient(135deg, #ffffff 0%, #f4f9ff 34%, #e5f1ff 68%, #d7e9ff 100%);
+  background-attachment: fixed;
+}
+
+.site-header {
+  background: rgba(244, 249, 255, 0.86);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.hero {
+  background:
+    linear-gradient(rgba(57, 132, 219, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57, 132, 219, 0.07) 1px, transparent 1px),
+    radial-gradient(circle at 12% 22%, rgba(255, 255, 255, 0.98) 0 18%, rgba(255, 255, 255, 0) 50%),
+    radial-gradient(circle at 88% 22%, rgba(85, 156, 245, 0.28) 0, rgba(85, 156, 245, 0) 46%),
+    linear-gradient(135deg, #ffffff 0%, #eef6ff 50%, #dcecff 100%);
+  background-size: 44px 44px, 44px 44px, auto, auto, auto;
+}
+
+main,
+.section {
+  background-color: transparent;
+}
+
+
+
+/* Blue underline animation for header navigation links */
+.nav-links a {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 6px;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 3px;
+  border-radius: 999px;
+  background: #2f66dc;
+  transition: width 0.22s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links a:focus-visible::after {
+  width: 100%;
+}
+
+
+
+/* Light footer: remove the original dark/black background */
+footer {
+  background: transparent !important;
+  color: #2f343b !important;
+  border-top: 1px solid rgba(47, 102, 220, 0.18);
+}
+
+footer p,
+footer a,
+footer strong,
+footer small {
+  color: #2f343b !important;
+}
+
+footer a:hover,
+footer a:focus-visible {
+  color: #2f66dc !important;
+}
+
+.footer-brand img {
+  background: transparent !important;
+}
+
+
+
+/* Increased typography for top navigation and schedule resource buttons.
+   The stronger selector and !important ensure styles.css cannot override it. */
+header.site-header nav#primary-nav.nav-links > a {
+  font-size: clamp(1.20rem, 1.45vw, 1.35rem) !important;
+  line-height: 1.35 !important;
+  font-weight: 700 !important;
+}
+
+.resource-links a,
+.resource-links .resource-label {
+  font-size: 1.10rem !important;
+  font-weight: 700 !important;
+}
+
+.resource-links .resource-icon,
+.resource-links .resource-arrow {
+  font-size: 1.10rem !important;
+}
+
+
+/* =========================================================
+   Mobile and tablet responsive improvements
+   ========================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video {
+  max-width: 100%;
+}
+
+p,
+h1,
+h2,
+h3,
+a,
+small,
+strong {
+  overflow-wrap: anywhere;
+}
+
+/* Comfortable touch targets on phones and tablets */
+a,
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button,
+.menu-toggle,
+.resource-links a,
+.nav-links a {
+  min-height: 44px;
+}
+
+/* Tablet layout */
+@media (max-width: 900px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  .site-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 10px 14px !important;
+    width: 100% !important;
+    padding: 12px 16px !important;
+  }
+
+  .brand {
+    display: flex !important;
+    align-items: center !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    gap: 10px !important;
+  }
+
+  .brand-logo-wrap {
+    flex: 0 0 auto !important;
+  }
+
+  .brand-logo-wrap img {
+    width: 46px !important;
+    height: 46px !important;
+    object-fit: contain !important;
+  }
+
+  .brand-copy {
+    min-width: 0 !important;
+  }
+
+  .brand-copy strong {
+    display: block !important;
+    font-size: clamp(0.86rem, 2.8vw, 1rem) !important;
+    line-height: 1.2 !important;
+  }
+
+  .brand-copy small {
+    display: block !important;
+    margin-top: 2px !important;
+    font-size: clamp(0.72rem, 2.35vw, 0.84rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  .menu-toggle {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 auto !important;
+    min-width: 74px !important;
+    padding: 10px 14px !important;
+    border-radius: 12px !important;
+    font-size: 1rem !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+  }
+
+  header.site-header nav#primary-nav.nav-links {
+    display: none !important;
+    flex: 1 0 100% !important;
+    width: 100% !important;
+    order: 3 !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 4px !important;
+    margin: 0 !important;
+    padding: 8px !important;
+    border: 1px solid rgba(47, 102, 220, 0.16) !important;
+    border-radius: 16px !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    box-shadow: 0 14px 34px rgba(34, 74, 137, 0.12) !important;
+  }
+
+  /* Works with the existing menu script when it changes aria-expanded,
+     and also supports common menu class names. */
+  .menu-toggle[aria-expanded="true"] + nav#primary-nav.nav-links,
+  header.site-header nav#primary-nav.nav-links.open,
+  header.site-header nav#primary-nav.nav-links.is-open,
+  header.site-header nav#primary-nav.nav-links.active {
+    display: flex !important;
+  }
+
+  header.site-header nav#primary-nav.nav-links > a {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    padding: 12px 14px !important;
+    border-radius: 10px !important;
+    font-size: 1.08rem !important;
+    line-height: 1.3 !important;
+  }
+
+  header.site-header nav#primary-nav.nav-links > a:hover,
+  header.site-header nav#primary-nav.nav-links > a:focus-visible {
+    background: rgba(47, 102, 220, 0.08) !important;
+  }
+
+  .hero {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 30px !important;
+    min-height: auto !important;
+    padding: 56px 22px 48px !important;
+  }
+
+  .hero-copy,
+  .chip-stage {
+    width: 100% !important;
+    max-width: 720px !important;
+    margin-inline: auto !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.4rem, 9vw, 4.2rem) !important;
+    line-height: 1.02 !important;
+    letter-spacing: -0.04em !important;
+  }
+
+  .hero-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  .hero-actions .button {
+    flex: 1 1 230px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    padding: 13px 18px !important;
+  }
+
+  .hero-vlsi-image {
+    width: min(560px, 100%) !important;
+    margin-inline: auto !important;
+  }
+
+  .section {
+    width: 100% !important;
+    padding: 58px 22px !important;
+  }
+
+  .two-column,
+  .instructor-section {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 24px !important;
+  }
+
+  .section-heading-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+  }
+
+  .cards-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 18px !important;
+  }
+
+  .feature-card,
+  .instructor-card,
+  .ta-card {
+    min-width: 0 !important;
+  }
+
+  .schedule-item {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 14px !important;
+    padding: 22px 0 !important;
+  }
+
+  .week {
+    justify-self: start !important;
+  }
+
+  .resource-links {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+
+  .resource-links a {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    padding: 12px 14px !important;
+  }
+
+  .resource-links .resource-label {
+    min-width: 0 !important;
+    white-space: normal !important;
+  }
+
+  footer {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 14px !important;
+    padding: 30px 22px !important;
+  }
+
+  .footer-brand {
+    min-width: 0 !important;
+  }
+}
+
+/* Phone layout */
+@media (max-width: 640px) {
+  .site-header {
+    padding: 10px 12px !important;
+  }
+
+  .brand-logo-wrap img {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .menu-toggle {
+    min-width: 66px !important;
+    padding: 9px 12px !important;
+    font-size: 0.95rem !important;
+  }
+
+  .hero {
+    gap: 24px !important;
+    padding: 42px 16px 38px !important;
+    background-size: 34px 34px, 34px 34px, auto, auto, auto !important;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.15rem, 12vw, 3.35rem) !important;
+  }
+
+  .hero-actions {
+    flex-direction: column !important;
+  }
+
+  .hero-actions .button {
+    flex: none !important;
+    width: 100% !important;
+  }
+
+  .section {
+    padding: 44px 16px !important;
+  }
+
+  .section-label {
+    font-size: 1.06rem !important;
+    line-height: 1.35 !important;
+  }
+
+  .section h2 {
+    font-size: clamp(1.8rem, 9vw, 2.5rem) !important;
+    line-height: 1.08 !important;
+  }
+
+  .large-copy,
+  .section p {
+    font-size: 1rem !important;
+    line-height: 1.65 !important;
+  }
+
+  .cards-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .feature-card {
+    padding: 20px !important;
+  }
+
+  .schedule-item {
+    padding: 20px 0 !important;
+  }
+
+  .topic-copy h3 {
+    font-size: 1.3rem !important;
+    line-height: 1.25 !important;
+  }
+
+  .resource-links {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  .resource-links a,
+  .resource-links .resource-label,
+  .resource-links .resource-icon,
+  .resource-links .resource-arrow {
+    font-size: 1rem !important;
+  }
+
+  .instructor-card {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 16px !important;
+  }
+
+  .avatar {
+    justify-self: start !important;
+  }
+
+  footer {
+    padding: 26px 16px !important;
+  }
+
+  .footer-brand {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+
+  .footer-brand img {
+    width: 42px !important;
+    height: 42px !important;
+    object-fit: contain !important;
+  }
+}
+
+/* Very narrow phones */
+@media (max-width: 380px) {
+  .brand-copy small {
+    display: none !important;
+  }
+
+  .hero h1 {
+    font-size: 2.05rem !important;
+  }
+
+  .section,
+  .hero {
+    padding-left: 13px !important;
+    padding-right: 13px !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+</style>
+
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+<a aria-label="EE476 course home" class="brand" href="#top">
+<span class="brand-logo-wrap">
+<img alt="University of Engineering and Technology Lahore logo" src="assets/uet-logo.png"/>
+</span>
+<span class="brand-copy">
+<strong>Department of Electrical Engineering</strong>
+<small>EE476 · Introduction to VLSI Systems</small>
+</span>
+</a>
+<button aria-controls="primary-nav" aria-expanded="false" class="menu-toggle">Menu</button>
+<nav aria-label="Primary navigation" class="nav-links" id="primary-nav">
+<a href="#about">About</a>
+<a href="#outcomes">Outcomes</a>
+<a href="#schedule">Schedule & resources</a>
+<a href="#contact">Contact</a>
+</nav>
+
+<button id="themeToggle" type="button" hidden aria-hidden="true" tabindex="-1"></button>
+</header>
+<main id="main">
+<section class="hero" id="top">
+<div class="hero-copy reveal">
+
+<h1>Introduction to<br/><span>VLSI Systems</span></h1>
+
+<div class="hero-actions">
+<a class="button primary" href="#schedule">Explore schedule &amp; resources</a>
+<a class="button secondary" href="#contact">Meet the teaching team</a>
+</div>
+<div aria-label="Course information" class="course-meta">
+
+</div>
+</div>
+<div aria-label="VLSI course illustration" class="chip-stage reveal">
+<!--
+  Add your image to the assets folder, then update the filename below.
+  Example: assets/vlsi-floorplan.png
+-->
+<img
+  class="hero-vlsi-image"
+  src="assets/i1.png"
+  alt="VLSI chip floorplan illustration"
+/>
+<div class="chip-caption">
+
+</div>
+</div>
+</section>
+
+<section class="section two-column" id="about">
+<div class="section-label">Course overview</div>
+<div>
+<h2>Designing the systems behind modern computing.</h2>
+<p class="large-copy">Very Large Scale Integration is the process of combining millions—or billions—of transistors on a single chip. It enables powerful processors, memories, and systems-on-chip while balancing speed, energy, area, and cost.</p>
+<p>This course introduces VLSI system design from technology scaling through architecture optimization. Students investigate device-, circuit-, and system-level trade-offs through focused analysis and HDL-based design tasks.</p>
+</div>
+</section>
+
+<section class="section" id="outcomes">
+<div class="section-label">What you will learn</div>
+<div class="cards-grid">
+<article class="feature-card reveal"><span>01</span><img alt="Illustration of transistor scaling and rising chip complexity" class="skill-visual" src="assets/i2.png"/><h3>Understand scaling</h3><p>Connect semiconductor technology trends with circuit behavior and system-level consequences.</p></article>
+<article class="feature-card reveal"><span>02</span><img alt="Illustration of HDL source code and digital timing waveforms" class="skill-visual" src="assets/i4.png"/><h3>Design in HDL</h3><p>Build synthesizable hardware descriptions and reason about the resulting implementation.</p></article>
+<article class="feature-card reveal"><span>03</span><img alt="Illustration of performance, power, and area trade-offs" class="skill-visual" src="assets/i5.png"/><h3>Optimize PPA</h3><p>Evaluate and improve performance, power, and area across competing microarchitectures.</p></article>
+<article class="feature-card reveal"><span>04</span><img alt="Illustration of the RTL-to-layout CAD design flow" class="skill-visual" src="assets/i6.png"/><h3>Use CAD flows</h3><p>Move from RTL through synthesis and implementation while reading reports critically.</p></article>
+</div>
+</section>
+<section class="section schedule-section" id="schedule">
+<div class="section-heading-row">
+<div>
+<div class="section-label">Schedule and resources</div>
+
+</div>
+
+</div>
+
+<div class="schedule-list">
+<article class="schedule-item">
+<div class="week">W01</div>
+<div class="topic-copy"><h3>Introduction:</h3><p>Past and future, Moore's Law, Dennard Scaling, Design Tradeoffs, Design Space and Optimality.</p></div>
+<div aria-label="Week 1 materials" class="resource-links"><a aria-label="Open Week 1 readings" href="https://www.intel.com/content/www/us/en/history/museum-story-of-intel-4004.html" rel="noreferrer" target="_blank"><span class="resource-icon">▤</span><span class="resource-label">Readings</span><span class="resource-arrow">↗</span></a><a aria-label="Open Week 1 assignments" href="https://rehannaeemee.github.io/VLSI/" rel="noreferrer" target="_blank"><span class="resource-icon">✎</span><span class="resource-label">Assignments</span><span class="resource-arrow">↗</span></a><a aria-label="Open Week 1 laboratory material" href="https://docs.amd.com/r/en-US/ug910-vivado-getting-started" rel="noreferrer" target="_blank"><span class="resource-icon">⚙</span><span class="resource-label">Labs</span><span class="resource-arrow">↗</span></a></div>
+</article>
+<article class="schedule-item">
+<div class="week">W02</div>
+<div class="topic-copy"><h3>CMOS and digital building blocks</h3><p>Transistor switching, CMOS logic, delay, energy, and robust digital design principles.</p></div>
+<div aria-label="Week 2 materials" class="resource-links"><a aria-label="Open Week 2 readings" href="https://www.allaboutcircuits.com/textbook/digital/chpt-3/cmos-gate-circuitry/" rel="noreferrer" target="_blank"><span class="resource-icon">▤</span><span class="resource-label">Readings</span><span class="resource-arrow">↗</span></a><a aria-label="Open Week 2 assignments" href="https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/" rel="noreferrer" target="_blank"><span class="resource-icon">✎</span><span class="resource-label">Assignments</span><span class="resource-arrow">↗</span></a><a aria-label="Open Week 2 laboratory material" href="https://hdlbits.01xz.net/wiki/Main_Page" rel="noreferrer" target="_blank"><span class="resource-icon">⚙</span><span class="resource-label">Labs</span><span class="resource-arrow">↗</span></a></div>
+</article>
+<article class="schedule-item">
+<div class="week">W03</div>
+<div class="topic-copy"><h3>Combinational and sequential systems</h3><p>Datapaths, registers, timing, pipelining, and synthesizable HDL implementation.</p></div>
+<div aria-label="Week 3 materials" class="resource-links"><a aria-label="Open Week 3 readings" href="https://docs.amd.com/r/en-US/ug901-vivado-synthesis" rel="noreferrer" target="_blank"><span class="resource-icon">▤</span><span class="resource-label">Readings</span><span class="resource-arrow">↗</span></a><a aria-label="Open Week 3 assignments" href="https://hdlbits.01xz.net/wiki/Main_Page" rel="noreferrer" target="_blank"><span class="resource-icon">✎</span><span class="resource-label">Assignments</span><span class="resource-arrow">↗</span></a><a aria-label="Open Week 3 laboratory material" href="https://docs.amd.com/r/en-US/ug910-vivado-getting-started" rel="noreferrer" target="_blank"><span class="resource-icon">⚙</span><span class="resource-label">Labs</span><span class="resource-arrow">↗</span></a></div>
+</article>
+<article class="schedule-item">
+<div class="week">W04</div>
+<div class="topic-copy"><h3>Arithmetic and memory structures</h3><p>Adders, multipliers, register files, SRAM organization, and architectural trade-offs.</p></div>
+<div aria-label="Week 4 materials" class="resource-links"><a aria-label="Open Week 4 readings" href="https://docs.amd.com/r/en-US/ug901-vivado-synthesis/RAM-HDL-Coding-Techniques" rel="noreferrer" target="_blank"><span class="resource-icon">▤</span><span class="resource-label">Readings</span><span class="resource-arrow">↗</span></a><a aria-label="Open Week 4 assignments" href="https://www.nand2tetris.org/course" rel="noreferrer" target="_blank"><span class="resource-icon">✎</span><span class="resource-label">Assignments</span><span class="resource-arrow">↗</span></a><a aria-label="Open Week 4 laboratory material" href="https://docs.amd.com/r/en-US/ug901-vivado-synthesis" rel="noreferrer" target="_blank"><span class="resource-icon">⚙</span><span class="resource-label">Labs</span><span class="resource-arrow">↗</span></a></div>
+</article>
+<article class="schedule-item">
+<div class="week">W05</div>
+<div class="topic-copy"><h3>Synthesis and static timing analysis</h3><p>Constraints, critical paths, setup and hold slack, reports, and transformations for timing closure.</p></div>
+<div aria-label="Week 5 materials" class="resource-links"><a aria-label="Open Week 5 readings" href="https://docs.amd.com/r/en-US/ug903-vivado-using-constraints" rel="noreferrer" target="_blank"><span class="resource-icon">▤</span><span class="resource-label">Readings</span><span class="resource-arrow">↗</span></a><a aria-label="Open Week 5 assignments" href="https://rehannaeemee.github.io/VLSI/" rel="noreferrer" target="_blank"><span class="resource-icon">✎</span><span class="resource-label">Assignments</span><span class="resource-arrow">↗</span></a><a aria-label="Open Week 5 laboratory material" href="https://docs.amd.com/r/en-US/ug906-vivado-design-analysis" rel="noreferrer" target="_blank"><span class="resource-icon">⚙</span><span class="resource-label">Labs</span><span class="resource-arrow">↗</span></a></div>
+</article>
+<article class="schedule-item">
+<div class="week">W06</div>
+<div class="topic-copy"><h3>Physical design and PPA optimization</h3><p>Floorplanning, placement, routing, congestion, power, area, and implementation quality.</p></div>
+<div aria-label="Week 6 materials" class="resource-links"><a aria-label="Open Week 6 readings" href="https://docs.amd.com/r/en-US/ug904-vivado-implementation" rel="noreferrer" target="_blank"><span class="resource-icon">▤</span><span class="resource-label">Readings</span><span class="resource-arrow">↗</span></a><a aria-label="Open Week 6 assignments" href="https://openroad.readthedocs.io/en/latest/" rel="noreferrer" target="_blank"><span class="resource-icon">✎</span><span class="resource-label">Assignments</span><span class="resource-arrow">↗</span></a><a aria-label="Open Week 6 laboratory material" href="https://docs.amd.com/r/en-US/ug904-vivado-implementation" rel="noreferrer" target="_blank"><span class="resource-icon">⚙</span><span class="resource-label">Labs</span><span class="resource-arrow">↗</span></a></div>
+</article>
+</div>
+</section>
+<section class="section instructor-section" id="contact">
+<div class="instructor-card reveal">
+
+<div aria-hidden="true" class="avatar">RN</div>
+<div>
+<p class="eyebrow">Course and Lab Instructor</p>
+<h2>Rehan Naeem</h2>
+<p>Office hours: Wednesday and Thursday, 9:30 AM–11:00 AM<br/>1st Floor, Department of Electrical Engineering</p>
+<a href="mailto:rehan.naeem@uet.edu.pk">rehan.naeem@uet.edu.pk ↗</a>
+
+</div>
+</div>
+
+<div class="ta-card">
+<p class="eyebrow">Teaching Assistant</p>
+<h3>Alishba</h3>
+<p>Course communication and lab support.</p>
+<a href="mailto:xyz@uet.edu.pk">xyz@uet.edu.pk ↗</a>
+</div>
+</section>
+</main>
+<footer>
+<div class="footer-brand">
+<img alt="" src="assets/uet-logo.png"/>
+<span><strong>Department of Electrical Engineering</strong><small>EE476 · Introduction to VLSI Systems</small></span>
+</div>
+<p>University of Engineering and Technology, Lahore</p>
+<a href="#top">Back to top ↑</a>
+</footer>
+<script src="script.js"></script>
+<script>
+/* Mobile-menu fallback. It only toggles aria-expanded when script.js has not
+   already done so, avoiding duplicate toggles. */
+document.addEventListener('DOMContentLoaded', function () {
+  const toggle = document.querySelector('.menu-toggle');
+  const nav = document.getElementById('primary-nav');
+  if (!toggle || !nav) return;
+
+  toggle.addEventListener('click', function () {
+    const before = toggle.getAttribute('aria-expanded') || 'false';
+    window.requestAnimationFrame(function () {
+      if ((toggle.getAttribute('aria-expanded') || 'false') === before) {
+        toggle.setAttribute('aria-expanded', before === 'true' ? 'false' : 'true');
+      }
+    });
+  });
+
+  nav.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      if (window.matchMedia('(max-width: 900px)').matches) {
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+
+  window.addEventListener('resize', function () {
+    if (window.innerWidth > 900) {
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+});
+</script>
+</body>
+</html>
