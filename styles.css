@@ -624,3 +624,18 @@ html[data-theme="dark"] .nav-links a:hover { color: #d7ff3f; }
   font-weight: 500;
   border-top: 1px solid rgba(47, 102, 220, 0.18);
 }
+.schedule-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.course-materials-button {
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .schedule-actions {
+    justify-content: flex-start;
+  }
+}
