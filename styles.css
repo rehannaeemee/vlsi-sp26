@@ -346,7 +346,7 @@ html[data-theme="dark"] .feature-card > span:first-child { color: var(--cyan); }
 .ta-card p { color: var(--muted); }
 .instructor-card a,
 .ta-card a { font-weight: 800; }
-.ta-card { grid-column: 1 / -1; }
+
 .instructor-placeholder { border-style: dashed; }
 .placeholder-contact { margin-bottom: 0; font-weight: 700; }
 
