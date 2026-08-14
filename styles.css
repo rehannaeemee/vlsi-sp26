@@ -628,6 +628,8 @@ html[data-theme="dark"] .nav-links a:hover { color: #d7ff3f; }
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .course-materials-button {
