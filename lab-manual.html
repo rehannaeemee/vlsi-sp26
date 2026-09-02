@@ -92,6 +92,8 @@
     align-self: start;
     position: sticky;
     top: 112px;
+    max-height: calc(100vh - 132px);
+    overflow-y: auto;
     padding: 18px;
     border: 1px solid rgba(47,102,220,.18);
     border-radius: 18px;
@@ -111,14 +113,17 @@
   }
   .lab-nav {
     display: grid;
-    gap: 5px;
+    gap: 9px;
   }
+  .lab-nav-group { min-width: 0; }
   .lab-nav-button {
     width: 100%;
-    min-height: 45px;
+    min-height: 58px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 12px;
+    justify-content: center;
+    gap: 3px;
     padding: 10px 12px;
     border: 1px solid transparent;
     border-radius: 11px;
@@ -130,6 +135,22 @@
     cursor: pointer;
     transition: background .16s ease, color .16s ease, border-color .16s ease, transform .16s ease;
   }
+  .nav-label {
+    width: 100%;
+    color: #57708f;
+    font-size: .72rem;
+    font-weight: 900;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .nav-topic {
+    width: 100%;
+    color: inherit;
+    font-size: .91rem;
+    font-weight: 750;
+    line-height: 1.3;
+  }
+  .lab-nav-button.active .nav-label { color: #2f66dc; }
   .lab-nav-button:hover {
     background: #f2f7ff;
     color: #204da9;
@@ -139,6 +160,33 @@
     background: linear-gradient(180deg,#eef5ff,#e4efff);
     color: #204da9;
     box-shadow: inset 3px 0 0 #2f66dc;
+  }
+  .lab-subnav {
+    display: grid;
+    gap: 2px;
+    margin: 7px 0 2px 13px;
+    padding: 2px 0 2px 13px;
+    border-left: 2px solid rgba(47,102,220,.20);
+  }
+  .lab-subnav[hidden] { display: none; }
+  .lab-subnav a {
+    padding: 6px 8px;
+    border-radius: 7px;
+    color: #607587;
+    font-size: .81rem;
+    font-weight: 650;
+    line-height: 1.25;
+    text-decoration: none;
+    transition: background .15s ease, color .15s ease;
+  }
+  .lab-subnav a:hover,
+  .lab-subnav a:focus-visible {
+    background: #eef5ff;
+    color: #2457bb;
+  }
+  .lab-subnav a.nav-child {
+    margin-left: 12px;
+    font-size: .78rem;
   }
 
   .lab-content-shell {
@@ -187,6 +235,7 @@
     background: transparent;
     box-shadow: none;
   }
+  .manual-section-card[id] { scroll-margin-top: 120px; }
   .manual-section-card h3 {
     display: flex;
     align-items: center;
@@ -219,6 +268,270 @@
     font-style: italic;
   }
 
+  /* ---------- Tables ---------- */
+  .table-wrap {
+    margin: 18px 0 4px;
+    overflow-x: auto;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    scrollbar-width: thin;
+  }
+  .manual-table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    border-top: 1.5px solid #252525;
+    border-bottom: 1.5px solid #252525;
+    color: #202020;
+    font-family: inherit;
+    font-size: 1.04rem;
+    line-height: 1.75;
+  }
+  .manual-table th,
+  .manual-table td {
+    padding: 8px 9px;
+    text-align: left;
+    vertical-align: baseline;
+    border: 0;
+    border-right: 1px solid rgba(47,102,220,.20);
+    border-bottom: 1px solid rgba(47,102,220,.18);
+  }
+  .manual-table th:last-child,
+  .manual-table td:last-child { border-right: 0; }
+  .manual-table tbody tr:last-child td { border-bottom: 0; }
+  .manual-table tbody td {
+    text-align: justify;
+    text-justify: inter-word;
+    vertical-align: top;
+  }
+  .manual-table thead {
+    background: linear-gradient(90deg,#2453b5 0%,#2f66dc 62%,#12a9d6 100%);
+  }
+  .manual-table thead th {
+    border-right-color: rgba(255,255,255,.42);
+    border-bottom: 1px solid rgba(255,255,255,.55);
+    background: transparent;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: 1.3;
+    text-shadow: 0 1px 1px rgba(11,41,92,.22);
+    text-transform: none;
+  }
+  .manual-table tbody tr,
+  .manual-table tbody tr:nth-child(even),
+  .manual-table tbody tr:hover { background: transparent; }
+  .manual-table td strong { color: #111; }
+  .manual-table .stage-number {
+    display: inline;
+    width: auto;
+    height: auto;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font-weight: 400;
+  }
+  .manual-table.compact { min-width: 560px; }
+  .manual-table.compact td { padding-block: 7px; }
+  .table-caption {
+    margin: 0 0 12px !important;
+    color: #647b8d !important;
+    font-size: .94rem !important;
+  }
+
+  .manual-callout {
+    margin: 18px 0 4px;
+    padding: 17px 19px;
+    border: 1px solid rgba(18,191,232,.24);
+    border-left: 5px solid #12bfe8;
+    border-radius: 13px;
+    background: linear-gradient(135deg,rgba(235,251,255,.96),rgba(244,248,255,.94));
+    color: #3f5f70;
+    line-height: 1.65;
+  }
+  .manual-callout strong { color: #184a64; }
+  .acceptance-callout {
+    border-left-color: #17a673;
+    background: linear-gradient(135deg,#effcf7,#f7fffb);
+  }
+  .formula {
+    color: #234b85;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: .91em;
+    font-weight: 750;
+  }
+  .video-grid {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 14px;
+    margin: 17px 0 20px;
+  }
+  .video-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 17px 18px;
+    border: 1px solid rgba(47,102,220,.16);
+    border-radius: 14px;
+    background: linear-gradient(145deg,#fff,#f1f7ff);
+    box-shadow: 0 9px 24px rgba(35,83,156,.07);
+  }
+  .video-card strong { display: block; color: #24465c; }
+  .video-card small { color: #6e8291; }
+  .video-link {
+    flex: 0 0 auto;
+    padding: 9px 12px;
+    border-radius: 10px;
+    background: #2f66dc;
+    color: #fff;
+    font-size: .83rem;
+    font-weight: 850;
+    text-decoration: none;
+  }
+  .video-link:hover,
+  .video-link:focus-visible { background: #214fae; }
+  .task-list li { margin-bottom: 9px; }
+  .task-list li::marker { color: #2f66dc; font-weight: 900; }
+
+  /* ---------- Guidance and concept components ---------- */
+  .guide-grid,
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .guide-card,
+  .concept-card {
+    padding: 18px 19px;
+    border: 1px solid rgba(47,102,220,.16);
+    border-radius: 14px;
+    background: linear-gradient(145deg,rgba(255,255,255,.98),rgba(240,247,255,.90));
+    box-shadow: 0 9px 24px rgba(35,83,156,.06);
+  }
+  .guide-card h4,
+  .concept-card h4 {
+    margin: 0 0 7px;
+    color: #214f9f;
+    font-size: 1.02rem;
+  }
+  .guide-card p,
+  .concept-card p {
+    margin: 0;
+    color: #526978;
+    font-size: .96rem;
+    line-height: 1.62;
+    text-align: justify;
+  }
+  .concept-figure {
+    margin: 22px auto;
+    text-align: center;
+  }
+  .concept-figure img {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    max-height: 660px;
+    margin: 0 auto;
+    border: 1px solid rgba(47,102,220,.13);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 10px 30px rgba(35,83,156,.08);
+  }
+  .concept-figure figcaption {
+    margin-top: 9px;
+    color: #708494;
+    font-size: .84rem;
+    line-height: 1.45;
+  }
+  .concept-subheading {
+    margin: 24px 0 9px;
+    color: #214f9f;
+    font-size: 1.13rem;
+  }
+  .source-quote {
+    margin: 18px 0;
+    padding: 16px 19px;
+    border-left: 4px solid #2f66dc;
+    border-radius: 0 11px 11px 0;
+    background: rgba(239,246,255,.82);
+    color: #466075;
+    font-style: italic;
+    line-height: 1.7;
+  }
+  .concept-note {
+    margin: 18px 0;
+    padding: 15px 17px;
+    border: 1px solid rgba(18,169,214,.22);
+    border-radius: 11px;
+    background: rgba(235,250,255,.72);
+    color: #405f70;
+  }
+  .concept-code {
+    margin: 18px 0;
+    padding: 18px 20px;
+    overflow-x: auto;
+    border: 1px solid rgba(47,102,220,.16);
+    border-radius: 12px;
+    background: #f5f8fc;
+    color: #263c4c;
+    font: .88rem/1.55 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    tab-size: 2;
+  }
+  .concept-list li { margin-bottom: 8px; }
+  .manual-section-card a:not(.video-link) {
+    color: #2471a9;
+    text-decoration-thickness: .08em;
+    text-underline-offset: .15em;
+  }
+  #lab-concepts .manual-section-card p,
+  #lab-concepts .manual-section-card li,
+  #lab-concepts .source-quote,
+  #lab-concepts .concept-note {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+  .flow-steps {
+    display: grid;
+    grid-template-columns: repeat(4,minmax(0,1fr));
+    gap: 10px;
+    margin-top: 18px;
+    padding: 0;
+    list-style: none;
+    counter-reset: flowstep;
+  }
+  .flow-steps li {
+    counter-increment: flowstep;
+    position: relative;
+    margin: 0;
+    padding: 42px 14px 15px;
+    border: 1px solid rgba(47,102,220,.16);
+    border-radius: 13px;
+    background: rgba(247,251,255,.92);
+    color: #405d70;
+    font-size: .92rem;
+    line-height: 1.5;
+  }
+  .flow-steps li::before {
+    content: counter(flowstep);
+    position: absolute;
+    top: 11px;
+    left: 14px;
+    display: grid;
+    width: 24px;
+    height: 24px;
+    place-items: center;
+    border-radius: 50%;
+    background: #2f66dc;
+    color: #fff;
+    font-size: .78rem;
+    font-weight: 900;
+  }
+
   .editing-note {
     margin-top: 24px;
     padding: 17px 19px;
@@ -243,8 +556,10 @@
     }
     .lab-sidebar {
       position: static;
+      max-height: none;
       padding: 12px;
       overflow-x: auto;
+      overflow-y: hidden;
       scrollbar-width: thin;
     }
     .sidebar-heading { display: none; }
@@ -254,12 +569,14 @@
       gap: 7px;
     }
     .lab-nav-button {
-      width: auto;
+      width: 100%;
       min-width: 92px;
       justify-content: center;
       white-space: nowrap;
       padding-inline: 13px;
     }
+    .lab-nav-group { width: 220px; }
+    .lab-subnav { margin-right: 8px; }
     .lab-nav-button.active { box-shadow: inset 0 -3px 0 #2f66dc; }
   }
 
@@ -273,6 +590,12 @@
       gap: 18px;
     }
     .lab-header-card { border-radius: 14px; }
+    .video-grid { grid-template-columns: 1fr; }
+    .guide-grid,
+    .concept-grid,
+    .flow-steps { grid-template-columns: 1fr; }
+    .manual-table th,
+    .manual-table td { padding: 13px 14px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -281,6 +604,14 @@
 </style>
 </head>
 <body>
+<!--
+  EDITING GUIDE
+  1. Update sidebar labels and links inside <nav class="lab-nav">.
+  2. Edit each page inside its matching <article data-lab-content="..."> block.
+  3. Keep data-lab, data-lab-content, and data-lab-subnav values identical.
+  4. Add table rows inside <tbody>; internal grid lines are applied automatically.
+  5. The ASIC flow image is stored beside this file as asic-design-flow.png.
+-->
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header">
   <a aria-label="EE476 course home" class="brand" href="index.html">
@@ -306,44 +637,395 @@
   </section>
 
   <section class="manual-workspace" id="manual">
+    <!-- Left navigation: add or rename labs and subtopics here. -->
     <aside class="lab-sidebar" aria-label="Lab manual contents">
       <p class="sidebar-heading">Lab Manual Contents</p>
       <nav class="lab-nav" aria-label="Select a lab">
-        <button class="lab-nav-button active" type="button" data-lab="1" aria-controls="lab-1"><span class="nav-label">Lab 1</span></button>
-        <button class="lab-nav-button" type="button" data-lab="2" aria-controls="lab-2"><span class="nav-label">Lab 2</span></button>
-        <button class="lab-nav-button" type="button" data-lab="3" aria-controls="lab-3"><span class="nav-label">Lab 3</span></button>
+        <div class="lab-nav-group">
+          <button class="lab-nav-button active" type="button" data-lab="guide" aria-controls="lab-guide">
+            
+            <span class="nav-topic">Lab Guidlines - MUST READ</span>
+          </button>
+          <div class="lab-subnav" data-lab-subnav="guide" aria-label="Important lab guidance subtopics">
+            <a data-lab="guide" href="#lab-guide-before">Before You Begin</a>
+            <a data-lab="guide" href="#lab-guide-workflow">Working Through a Lab</a>
+            <a data-lab="guide" href="#lab-guide-records">Recommended Practice</a>
+          </div>
+        </div>
+        <div class="lab-nav-group">
+          <button class="lab-nav-button" type="button" data-lab="concepts" aria-controls="lab-concepts">
+            
+            <span class="nav-topic">Background</span>
+          </button>
+          <div class="lab-subnav" data-lab-subnav="concepts" aria-label="Background subtopics" hidden>
+            <a data-lab="concepts" href="#lab-concepts-flow">Flow Overview</a>
+            <a data-lab="concepts" href="#lab-concepts-cad">CAD Tools</a>
+            <a data-lab="concepts" href="#lab-concepts-pdk">SKY130 and PDKs</a>
+            <a data-lab="concepts" href="#lab-concepts-simulation">Simulation</a>
+            <a class="nav-child" data-lab="concepts" href="#lab-concepts-sdf">Standard Delay Format (SDF)</a>
+            <a data-lab="concepts" href="#lab-concepts-synthesis">Synthesis</a>
+            <a data-lab="concepts" href="#lab-concepts-sta">Static Timing Analysis</a>
+          </div>
+        </div>
+        <div class="lab-nav-group">
+          <button class="lab-nav-button" type="button" data-lab="1" aria-controls="lab-1">
+            <span class="nav-label">Lab 1</span>
+            <span class="nav-topic">RTL-to-GDSII Counter Flow</span>
+          </button>
+          <div class="lab-subnav" data-lab-subnav="1" aria-label="Lab 1 subtopics" hidden>
+            <a data-lab="1" href="#lab-1-aim">Aim</a>
+            <a data-lab="1" href="#lab-1-outcomes">Learning Outcomes</a>
+            <a data-lab="1" href="#lab-1-scope">Reference and Scope</a>
+            <a data-lab="1" href="#lab-1-tcl">LINUX OS and Tcl Programming</a>
+            <a data-lab="1" href="#lab-1-procedure">Tasks</a>
+            <a data-lab="1" href="#lab-1-adaptations">Non-DFT Adaptations</a>
+            <a data-lab="1" href="#lab-1-results">Results to Record</a>
+            <a data-lab="1" href="#lab-1-questions">Post-Lab Questions</a>
+          </div>
+        </div>
+        <div class="lab-nav-group">
+          <button class="lab-nav-button" type="button" data-lab="2" aria-controls="lab-2">
+            <span class="nav-label">Lab 2</span>
+            <span class="nav-topic">Topic to be added</span>
+          </button>
+          <div class="lab-subnav" data-lab-subnav="2" aria-label="Lab 2 subtopics" hidden>
+            <a data-lab="2" href="#lab-2-objectives">Objectives</a>
+            <a data-lab="2" href="#lab-2-tasks">Tasks</a>
+          </div>
+        </div>
+        <div class="lab-nav-group">
+          <button class="lab-nav-button" type="button" data-lab="3" aria-controls="lab-3">
+            <span class="nav-label">Lab 3</span>
+            <span class="nav-topic">Topic to be added</span>
+          </button>
+          <div class="lab-subnav" data-lab-subnav="3" aria-label="Lab 3 subtopics" hidden>
+            <a data-lab="3" href="#lab-3-objectives">Objectives</a>
+            <a data-lab="3" href="#lab-3-tasks">Tasks</a>
+          </div>
+        </div>
+         <div class="lab-nav-group">
+          <button class="lab-nav-button" type="button" data-lab="4" aria-controls="lab-4">
+            <span class="nav-label">CEP</span>
+            <span class="nav-topic">Topic to be added</span>
+          </button>
+          <div class="lab-subnav" data-lab-subnav="3" aria-label="Lab 3 subtopics" hidden>
+            <a data-lab="3" href="#lab-3-objectives">Objectives</a>
+            <a data-lab="3" href="#lab-3-tasks">Tasks</a>
+          </div>
+        </div>
       </nav>
     </aside>
 
+    <!-- Main content panels: data-lab-content must match the corresponding data-lab button. -->
     <div class="lab-content-shell" aria-live="polite">
-      <article class="lab-content active" id="lab-1" data-lab-content="1">
+      <!-- START HERE: Important guidance shown when the page first opens. -->
+      <article class="lab-content active" id="lab-guide" data-lab-content="guide">
         <div class="lab-header-card">
-          <span class="lab-index">LAB 01</span>
-          <h2>Lab 1: Title</h2>
+          <span class="lab-index">START HERE</span>
+          <h2>Guidelines</h2>
         </div>
-        <section class="manual-section-card">
-          <h3>Objectives</h3>
+        
+        <section class="manual-section-card" id="lab-guide-workflow">
+          <h3>How to Work Through Each Lab</h3>
+          <ol class="flow-steps">
+            <li><strong>Read:</strong> Understand the objective, references, and expected deliverables. Review the BACKGROUND section, complete any assigned pre-lab exercise, and read the referenced manual pages</li>
+            <li><strong>Set up:</strong> source the correct environment and confirm paths and input files. Work only in the designated run directory. Do not rename, delete, or modify shared technology files, libraries, or common setup files.</li>
+            <li><strong>Run:</strong> execute one stage at a time using a saved script whenever possible.</li>
+            <li><strong>Verify:</strong> inspect logs for errors or warnings after performing each step of the RTL to GDS flow.</li>
+            <li><strong>Checkpoint:</strong> preserve important databases and outputs before major transitions.</li>
+            <li><strong>Reflect:</strong> relate the observed result to the design concept and answer the questions.</li>
+          </ol>
+          <div class="manual-callout"><strong>Do not continue blindly after an error.</strong> A successful tool command does not guarantee a correct design. Confirm the expected output and verification status at every handoff.</div>
+        </section>
+        <section class="manual-section-card" id="lab-guide-records">
+          <h3>Recommended Practice</h3>
           <ul>
-            <li class="placeholder-copy">Add the first learning objective for Lab 1.</li>
-            <li class="placeholder-copy">Add the second learning objective for Lab 1.</li>
-            <li class="placeholder-copy">Add any additional objectives as required.</li>
+            <li>Keep Tcl scripts, constraints, logs, reports, generated netlists, and important screenshots in clearly named folders.</li>
+            <li>Record timing values with their sign, unit, analysis type, and operating corner or view.</li>
+            <li>Use matching versions of the netlist, constraints, parasitics, and SDF file; do not combine outputs from unrelated runs.</li>
+            <li>Document any warning, violation, workaround, or ECO and explain its effect on the design.</li>
+            <li>Use meaningful file names and comments so another student can understand and reproduce the flow.</li>
+            <li>Ask the instructor before changing technology data, library settings, supplied RTL, or the defined experiment scope.</li>
           </ul>
         </section>
-        <section class="manual-section-card">
-          <h3>Tasks</h3>
-          <ol>
-            <li class="placeholder-copy">Add Task 1 for Lab 1.</li>
-            <li class="placeholder-copy">Add Task 2 for Lab 1.</li>
-            <li class="placeholder-copy">Add Task 3 or additional implementation/reporting work.</li>
+      </article>
+
+      <!-- NECESSARY CONCEPTS: Foundational reading used by the laboratory experiments. -->
+      <article class="lab-content" id="lab-concepts" data-lab-content="concepts" hidden>
+        <div class="lab-header-card">
+          <span class="lab-index">FOUNDATION</span>
+          <h2>Background</h2>
+        </div>
+        <section class="manual-section-card" id="lab-concepts-flow">
+          <h3>RTL-to-GDSII Flow Overview</h3>
+          <p>An RTL-to-GDSII flow progressively transforms a behavioral hardware description into a physically manufacturable layout. Each stage adds information, checks correctness, and produces files required by the next stage. The flow is iterative: a timing or physical violation may require returning to an earlier stage.</p>
+          <figure class="concept-figure">
+            <img
+              alt="ASIC design flow from specifications and RTL through synthesis, physical design, signoff, and GDSII"
+              src="asic-design-flow.png"
+            />
+            <figcaption>Major front-end, back-end, and fabrication stages in an ASIC design flow.</figcaption>
+          </figure>
+          <p>This flow chart shows many of the individual stages digital designers follow in industry. However, it does not show the cyclic nature between individual stages. For example, a bug discovered in <em>Simulation</em> provokes <em>RTL Design</em> modifications. In general, problems discovered in the back end sometimes require changes in the front end. Therefore, it is imperative that you are well-versed in the mechanics of simulating your designs before designing anything.</p>
+          <p>The principal stages to pay attention to are <em>RTL Design</em>, <em>Synthesis</em>, <em>Place Design</em>, and <em>Routing</em>. The last two stages are often combined and termed <em>Place and Route</em>.</p>
+        </section>
+        <section class="manual-section-card" id="lab-concepts-cad">
+          <h3>CAD Tools</h3>
+          <p>Going through the design flow is quite labor-intensive and intricate. In general, computer-aided design (CAD) software tools are programs used to reduce the burden of manually performing each stage of a design flow. Electronic design automation (EDA), or electronic computer-aided design (ECAD), tools are specifically created to aid integrated-circuit design flows.</p>
+          <p>The three major CAD companies for ASIC design are <em>Cadence</em>, <em>Synopsys</em>, and <em>Siemens</em>. Each supplies tools for all stages of the Very Large-Scale Integration (VLSI) flow. VLSI refers to complex integrated circuits containing thousands or more transistors.</p>
+          <div class="table-wrap">
+            <table class="manual-table" aria-label="ASIC CAD tools by design stage and vendor">
+              <thead>
+                <tr><th>Design stage</th><th>Synopsys</th><th>Cadence</th><th>Siemens</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Simulation</strong></td><td><em>VCS</em></td><td><em>Xcelium Logic Simulator</em></td><td>—</td></tr>
+                <tr><td><strong>Synthesis</strong></td><td><em>Fusion Compiler</em> (<em>Design Compiler</em>)</td><td><em>Genus</em></td><td>—</td></tr>
+                <tr><td><strong>Place and Route</strong></td><td><em>Fusion Compiler</em> (<em>IC Compiler II</em>)</td><td><em>Innovus</em></td><td>—</td></tr>
+                <tr><td><strong>Physical Layout</strong></td><td><em>Custom Compiler</em></td><td><em>Virtuoso Layout Suite</em></td><td><em>L-Edit</em></td></tr>
+                <tr><td><strong>DRC and LVS</strong></td><td><em>IC Validator</em></td><td><em>Virtuoso Layout Suite</em></td><td><em>Calibre</em></td></tr>
+                <tr><td><strong>Verification and Signoff</strong></td><td><em>NanoTime</em></td><td><em>Virtuoso Layout Suite</em></td><td><em>Calibre</em></td></tr>
+                <tr><td><strong>Power</strong></td><td><em>PrimePower</em></td><td><em>Voltus</em></td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>It is common to use different tools for different stages of the design flow. This is possible because tools typically write common interchange file formats that other vendors' tools can consume, or provide utilities for converting files into supported formats. For example, a design may use Synopsys <em>VCS</em> for simulation, Cadence <em>Genus</em> and <em>Innovus</em> for synthesis and place-and-route, respectively, and Siemens <em>Calibre</em> for DRC and LVS. You will gain experience with some of these tools in subsequent labs.</p>
+        </section>
+        <section class="manual-section-card" id="lab-concepts-pdk">
+          <h3>SkyWater 130 and Process Design Kits</h3>
+          <p><a href="https://skywater-pdk.readthedocs.io/en/main/" rel="noopener noreferrer" target="_blank">SkyWater 130</a>, or SKY130, is an open-source process design kit (PDK) for a 130 nm technology node. The details of a PDK will become clearer through later laboratories. Major foundries such as Intel, GlobalFoundries, and TSMC provide PDKs for their fabrication processes.</p>
+          <blockquote class="source-quote">A PDK is a set of files used by semiconductor design tools to model a fabrication process. PDKs are commonly specific to a foundry and may be proprietary, although some PDKs are open source and publicly available. <span>(Adapted from <a href="https://blink.ucsd.edu/sponsor/exportcontrol/pdkguidance.html" rel="noopener noreferrer" target="_blank">UC San Diego PDK guidance</a>.)</span></blockquote>
+        </section>
+        <section class="manual-section-card" id="lab-concepts-simulation">
+          <h3>Simulation</h3>
+          <p>Simulation is a fundamental step in ASIC design and digital design in general. Different forms of simulation can occur at several stages of the design cycle; the two principal forms considered here are <strong>behavioral simulation</strong>, also called <strong>RTL simulation</strong>, and <strong>gate-level simulation</strong>.</p>
+          <h4 class="concept-subheading">Testbenches</h4>
+          <p>A testbench is an HDL module used only for simulation. It instantiates the design under test (DUT), drives its inputs, and verifies its outputs.</p>
+          <h4 class="concept-subheading">Waveforms</h4>
+          <p>A waveform file records selected signals during simulation so they can be viewed as traces after the run. Desired signals must be marked before simulation; a signal that was not recorded cannot be added to an already completed waveform. Waveforms are the primary means by which digital designers debug RTL. Use the following order:</p>
+          <ol class="concept-list">
+            <li>Look for obvious bugs in the RTL.</li>
+            <li>If the bug is not obvious, inspect the waveform.</li>
           </ol>
+          <h4 class="concept-subheading">RTL Simulation</h4>
+          <p>RTL simulation is one of the first steps used to check the functionality or behavior of an RTL design. Fixing bugs at the RTL stage makes subsequent debugging easier, and the required computing resources and runtime are much lower than for gate-level simulation.</p>
+          <h4 class="concept-subheading">Gate-Level Simulation</h4>
+          <p>Gate-level simulation is performed after a design has been synthesized. Synthesis transforms a behavioral Verilog representation into digital logic gates, or cells, from a given library to form a <em>netlist</em>. Post-synthesis simulation therefore evaluates the design at the gate level.</p>
+          <p>By default, logic gates behave ideally: their outputs appear valid instantly when a new input is presented. In real silicon, gate delay varies with operating conditions such as voltage, process variation, and temperature. CAD tools calculate these delays and annotate them onto gates using a Standard Delay Format (SDF) file.</p>
+          <p>Gate-level simulations with timing annotation model signal propagation. A gate output does not change instantly when its input changes; the signal must propagate through the gate.</p>
+          <h4 class="concept-subheading" id="lab-concepts-sdf">Standard Delay Format (SDF)</h4>
+          <blockquote class="source-quote">SDF is an IEEE standard representation of timing data that can be used at different stages of the electronic-design process.</blockquote>
+          <div class="concept-note"><strong>Note:</strong> Detailed knowledge of every SDF feature is unnecessary for this lab. Students interested in additional detail may consult this <a href="https://www.vlsi-expert.com/2019/12/standard-delay-format-4.html" rel="noopener noreferrer" target="_blank">four-part SDF tutorial</a>.</div>
+          <p><strong>Example SDF cell definition:</strong></p>
+          <pre class="concept-code" aria-label="Example SDF cell definition"><code>(CELL
+  (CELLTYPE "CLKINVX2")
+  (INSTANCE adde.g768)
+  (DELAY
+    (ABSOLUTE
+      (PORT A (::0.1))
+      (IOPATH A Y (::157) (::128))
+    )
+  )
+)</code></pre>
+          <p>The example is a single cell definition from <code>src/post-syn/fir.mapped.sdf</code>. Its main fields are:</p>
+          <ul class="concept-list">
+            <li><strong>CELLTYPE</strong> — names the type of cell in the PDK.</li>
+            <li><strong>INSTANCE</strong> — identifies the specific instance of the cell in the current design.</li>
+            <li><strong>DELAY</strong> — provides timing information for the cell.</li>
+            <li><strong>ABSOLUTE</strong> — indicates that the timing values are absolute.</li>
+            <li><strong>PORT A</strong> — provides timing information for input <code>A</code>.</li>
+            <li><strong>IOPATH</strong> — provides propagation timing from input <code>A</code> to output <code>Y</code>; the example cell is an inverter.</li>
+          </ul>
+          <p>The delay format is <code>minimum:typical:maximum</code>. Minimum and maximum values represent different operating regions. The example specifies maximum delays of either 157 ps or 128 ps, depending on whether the data transitions from low to high or from high to low. The SDF timescale declaration determines that these values are in picoseconds.</p>
+        </section>
+        <section class="manual-section-card" id="lab-concepts-synthesis">
+          <h3>What Is Synthesis?</h3>
+          <p>Synthesis transforms RTL, typically written in Verilog or VHDL, into a gate-level netlist. A synthesized gate-level Verilog netlist contains cells from the target technology. For each cell, the PDK supplies information such as a transistor-level schematic with transistor sizes, a physical layout for fabrication, and timing libraries containing performance specifications.</p>
+          <p>Cadence <em>Genus</em> is used for synthesis in this course. The process begins with compilation and elaboration of RTL. According to <a href="https://ieeexplore.ieee.org/document/8299595" rel="noopener noreferrer" target="_blank">IEEE Std 1800-2017</a>, <strong>compilation</strong> reads the RTL and analyzes it for syntax and semantic errors. <strong>Elaboration</strong> expands instantiations and hierarchies, resolves parameter values, and establishes netlist connectivity. In Genus, elaboration produces a generic netlist composed of generic gates such as <code>CDN_flop</code> and <code>CDN_mux2</code>. These generic gates do not yet correspond physically to cells in the target standard-cell library.</p>
+        </section>
+        <section class="manual-section-card" id="lab-concepts-sta">
+          <h3>Introduction to Static Timing Analysis</h3>
+          <p><strong>Static Timing Analysis (STA)</strong> validates timing performance by analyzing timing arcs for violations. Broadly, it identifies timing arcs, calculates propagation delays, and checks setup and hold requirements. Basic delay concepts can be understood by inspecting timing-library fragments.</p>
+          <p>Two important classes of delay are <strong>cell delay</strong> and <strong>net delay</strong>. In a Liberty timing model, the delay through a cell can be represented by a two-dimensional lookup table indexed by input-net transition and cell output capacitance. The timing sense describes the relationship between input and output transitions. In the following <a href="https://github.com/The-OpenROAD-Project/asap7" rel="noopener noreferrer" target="_blank">ASAP7</a>-style example, the arc is <code>positive_unate</code>, so a rising input is associated with a rising or non-changing output.</p>
+          <pre class="concept-code"><code>lu_table_template (delay_template_7x7_x1) {
+  variable_1 : input_net_transition;
+  variable_2 : total_output_net_capacitance;
+  index_1 ("5, 10, 20, 40, 80, 160, 320");
+  index_2 ("0.72, 1.44, 2.88, 5.76, 11.52, 23.04, 46.08");
+}
+
+....
+
+pin (Y) {
+  direction : output;
+  function : "A";
+  power_down_function : "(!VDD) + (VSS)";
+  related_ground_pin : VSS;
+  related_power_pin : VDD;
+  max_capacitance : 368.64;
+  output_voltage : default_VDD_VSS_output;
+
+  timing () {
+    related_pin : "A";
+    timing_sense : positive_unate;
+    timing_type : combinational;
+
+    cell_rise (delay_template_7x7_x1) {
+      index_1 ("5, 10, 20, 40, 80, 160, 320");
+      index_2 ("5.76, 11.52, 23.04, 46.08, 92.16, 184.32, 368.64");
+      values ( \
+        "16.3122, 18.9302, 23.4928, 31.8294, 47.9742, 80.0606, 144.088", \
+        "17.7082, 20.3463, 24.858, 33.2468, 49.3778, 81.4822, 145.567", \
+        "20.3545, 22.9433, 27.4932, 35.8118, 51.9385, 84.0089, 148.036", \
+        "24.3952, 27.0398, 31.6149, 39.9636, 56.036, 88.0888, 152.111", \
+        "29.3454, 32.0006, 36.6138, 45.0047, 61.1147, 93.221, 156.998", \
+        "35.5151, 38.3592, 43.2204, 51.6798, 67.7266, 99.5716, 163.503", \
+        "41.9998, 45.0837, 50.305, 59.1205, 75.1338, 107.432, 171.049" \
+      );
+    }
+  }
+}</code></pre>
+          <p>Wire delays can be estimated with a <code>wire_load</code> macro model selected according to the enclosure area of a net. The model scales resistance and capacitance according to fanout so an RC delay can be estimated. Because wire-load modeling is statistically driven, it may be pessimistic; organizations sometimes replace foundry models with models derived from their own designs and measured activity.</p>
+          <pre class="concept-code"><code>wire_load (10X10) {
+  resistance : 6.00;
+  capacitance : 1.30;
+  area : 0.08;
+  slope : 0.05;
+  fanout_length (1, 2.0000);
+  fanout_length (2, 3.2000);
+  fanout_length (3, 3.4000);
+  fanout_length (4, 4.1000);
+  fanout_length (5, 4.6000);
+  fanout_length (6, 5.1000);
+}
+
+default_wire_load_mode : enclosed;</code></pre>
         </section>
       </article>
+      <!-- LAB 1: RTL-to-GDSII counter flow. -->
+      <article class="lab-content" id="lab-1" data-lab-content="1" hidden>
+        <div class="lab-header-card">
+          <span class="lab-index">LAB 01</span>
+          <h2>RTL-to-GDSII Flow for a Counter Design</h2>
+        </div>
+        <section class="manual-section-card" id="lab-1-aim">
+          <h3>1. Aim</h3>
+          <p>To implement and verify a counter design from RTL through GDSII using the Cadence digital design flow, without scan insertion or ATPG.</p>
+        </section>
+        <section class="manual-section-card" id="lab-1-outcomes">
+          <h3>2. Learning Outcomes</h3>
+          <ul>
+            <li>Verify the functional behavior of a counter RTL design using simulation.</li>
+            <li>Synthesize RTL into a technology-mapped gate-level netlist without DFT.</li>
+            <li>Confirm equivalence between the RTL and synthesized netlist.</li>
+            <li>Complete floorplanning, power planning, placement, clock-tree synthesis, routing, extraction, and physical verification.</li>
+            <li>Analyze setup and hold timing and apply a timing ECO only when required.</li>
+            <li>Generate the final GDSII stream and validate the implemented design using gate-level simulation with SDF annotation.</li>
+          </ul>
+        </section>
+        <section class="manual-section-card" id="lab-1-scope">
+          <h3>3. Reference and Scope</h3>
+          <p>Use <em>Cadence RTL-to-GDSII Flow, Course Version 7.0, Lab Manual, Revision 1.0 (July 2025)</em> as the detailed procedural reference. Follow the cited lab sections below; do not reproduce their full procedures in the laboratory report.</p>
+          <div class="table-wrap">
+            <table class="manual-table compact" aria-label="Included and excluded experiment scope">
+              <thead><tr><th>Included</th><th>Excluded or adapted</th></tr></thead>
+              <tbody>
+                <tr><td>Labs 3-1, 5-1, 7-1, 7-2, 8-1, 9-1, and 10-1</td><td>The complete Module 4, Lab 5-2, and the complete Module 6 are excluded.</td></tr>
+                <tr><td>Non-DFT synthesized netlist</td><td>Do not perform scan insertion, scan-chain connection, ATPG, or pattern generation.</td></tr>
+                <tr><td>Timing analysis of valid counter paths</td><td>Ignore scan-specific instructions involving <span class="formula">scanDEF</span>, <span class="formula">SE</span>, <span class="formula">scan_in</span>, or <span class="formula">scan_out</span>.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="manual-section-card" id="lab-1-tcl">
+          <h3>4. LINUX OS and Tcl Programming</h3>
+          <p>Before starting the Cadence flow, watch the introductory Tcl videos and complete the short scripting exercise below.</p>
+          <div class="video-grid" aria-label="Tcl learning videos">
+            <div class="video-card"><span><strong>Video 1: Tcl Fundamentals</strong><small></small></span><a class="video-link" href="https://www.youtube.com/watch?v=o_mhSa5HQCc" aria-label="Placeholder link for Tcl fundamentals video">Video</a></div>
+            <div class="video-card"><span><strong>Video 2: Tcl Fundamentals</strong><small></small></span><a class="video-link" href="https://www.youtube.com/watch?v=T_4Bvg6np08" aria-label="Placeholder link for Tcl EDA automation video">Video</a></div>
+            <div class="video-card"><span><strong>Video 3: Linux Basics</strong><small></small></span><a class="video-link" href="https://www.youtube.com/watch?v=Ope9cg501nA&list=PLZU5hLL_713x1w0kaMFXA7k2SGQQZOO-G&index=5" aria-label="Placeholder link for Linux basics video">Video</a></div>
+          </div>
+         
+        </section>
+        <section class="manual-section-card" id="lab-1-procedure">
+          <h3>5. Tasks</h3>
+          <p class="table-caption">Complete the following stages in order. For detailed menus, commands, options, screenshots, and troubleshooting guidance, follow the referenced pages in the supplied lab manual.</p>
+          <div class="table-wrap">
+            <table class="manual-table" aria-label="RTL-to-GDSII experimental procedure">
+              <thead><tr><th>#</th><th>Stage</th><th>Manual reference</th><th>Required activity</th><th>Evidence</th></tr></thead>
+              <tbody>
+                <tr><td><span class="stage-number">1</span></td><td><strong>Environment setup</strong></td><td>Module 1, p. 6; Lab 3-1, pp. 9–10</td><td>Configure and source <span class="formula">cshrc</span>. Confirm that each required tool launches and that the counter database directories are intact.</td><td>Environment log or setup screenshot</td></tr>
+                <tr><td><span class="stage-number">2</span></td><td><strong>RTL simulation</strong></td><td>Lab 3-1, pp. 9–15</td><td>Run Xcelium in graphical and batch modes. Verify reset and count progression in the waveform.</td><td>RTL waveform and simulation log</td></tr>
+                <tr><td><span class="stage-number">3</span></td><td><strong>Synthesis without DFT</strong></td><td>Lab 5-1, pp. 23–31</td><td>Run the basic Genus synthesis flow only. Generate the mapped netlist, final SDC, SDF, area, power, timing, and QoR reports.</td><td><span class="formula">counter_netlist.v</span>, <span class="formula">counter_sdc.sdc</span>, <span class="formula">delays.sdf</span>, reports</td></tr>
+                <tr><td><span class="stage-number">4</span></td><td><strong>Equivalence and cell model</strong></td><td>Lab 7-1, pp. 52–56; Lab 7-2, pp. 57–58</td><td>Compare the RTL golden design with the non-DFT synthesized revised design. Generate the Verilog cell model required for GLS if it is not already supplied.</td><td>Equivalent result and library <span class="formula">.v</span> file</td></tr>
+                <tr><td><span class="stage-number">5</span></td><td><strong>Physical implementation</strong></td><td>Lab 8-1, pp. 60–95</td><td>Import the Lab 5-1 netlist and complete floorplanning, pin assignment, power planning, placement, CTS, routing, extraction, timing checks, DRC/connectivity checks, power/rail analysis as available, filler placement, and stream-out. Skip scanDEF and scan-reordering actions.</td><td>Placed/routed views, SPEF, reports, and counter GDSII</td></tr>
+                <tr><td><span class="stage-number">6</span></td><td><strong>Timing analysis and closure</strong></td><td>Lab 9-1, pp. 97–116</td><td>Analyze setup and hold timing in Innovus/Tempus. Debug only paths present in the non-DFT design. Apply and record an ECO if a real violation exists; otherwise document that no ECO was required.</td><td>Constraint and setup/hold timing reports and ECO record</td></tr>
+                <tr><td><span class="stage-number">7</span></td><td><strong>Gate-level simulation</strong></td><td>Lab 10-1, pp. 118–124</td><td>Run delay-aware GLS using the non-DFT gate or post-route netlist, its matching SDF, the modified testbench, and the Verilog cell model. Do not force scan signals.</td><td>SDF annotation log and GLS waveform</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+        <section class="manual-section-card" id="lab-1-adaptations">
+          <h3>6. Important Adaptations for the Non-DFT Flow</h3>
+          <ul>
+            <li>Use the mapped netlist produced by Lab 5-1. Do not substitute the DFT netlist associated with Lab 5-2.</li>
+            <li>During Lab 8-1, omit loading <span class="formula">counter.scandef</span> and omit scan-chain deletion, loading, or reordering. Continue with normal placement and optimization of the non-DFT netlist.</li>
+            <li>During Lab 9-1, do not attempt the manual's SE/scan-path example. Select an actual violating path in the non-DFT design. If no path violates timing, retain the reports as evidence of closure.</li>
+            <li>During Lab 10-1, remove or ignore instructions that force <span class="formula">SE</span>, <span class="formula">scan_in</span>, and <span class="formula">scan_out</span>. Apply only the counter's normal functional stimulus.</li>
+            <li>The SDF used for GLS must correspond to the same netlist being simulated. Prefer a post-route netlist and post-route SDF when both are available; otherwise use the matching synthesis pair generated in Lab 5-1.</li>
+          </ul>
+        </section>
+        <section class="manual-section-card" id="lab-1-results">
+          <h3>7. Results to Record</h3>
+          <p>Record signed values exactly as reported, including the analysis view/corner and units. WNS is the minimum (worst) path slack; TNS is the sum of all negative path slacks. Do not remove minus signs or mix values from different corners.</p>
+          <div class="table-wrap">
+            <table class="manual-table" aria-label="Parameters to record directly">
+              <thead><tr><th>Parameter</th><th>Where to obtain it / what to record</th><th>Unit</th></tr></thead>
+              <tbody>
+                <tr><td><strong>RTL simulation</strong></td><td>Xcelium log and waveform: Pass/Fail; verify reset and correct count progression.</td><td>Status</td></tr>
+                <tr><td><strong>Synthesis cell area</strong></td><td>Genus <span class="formula">reports/report_area.rpt</span>: record total mapped cell area.</td><td>Library area unit</td></tr>
+                <tr><td><strong>Synthesis critical-path delay</strong></td><td>Genus <span class="formula">reports/report_timing.rpt</span>: record data-path delay of the worst setup path.</td><td>ns</td></tr>
+                <tr><td><strong>Synthesis WNS, TNS, violators</strong></td><td>Genus <span class="formula">report_timing.rpt</span> or <span class="formula">report_qor.rpt</span>: record WNS, TNS, and number of violating endpoints.</td><td>ns; count</td></tr>
+                <tr><td><strong>Synthesis power components</strong></td><td>Genus <span class="formula">reports/report_power.rpt</span>: record internal, switching, and leakage power separately.</td><td>Use report unit</td></tr>
+                <tr><td><strong>Logical equivalence</strong></td><td>Conformal compare result: Equivalent/Non-equivalent and number of failing compare points.</td><td>Status; count</td></tr>
+                <tr><td><strong>Post-placement timing</strong></td><td>Innovus log after <span class="formula">place_opt_design</span>: record WNS and TNS.</td><td>ns</td></tr>
+                <tr><td><strong>Post-CTS timing</strong></td><td>Innovus log after <span class="formula">clock_opt_design</span>: record whether violations exist and their count.</td><td>Status; count</td></tr>
+                <tr><td><strong>Post-route setup timing</strong></td><td><span class="formula">time_design -post_route</span>: record WNS, TNS, and number of violating endpoints.</td><td>ns; count</td></tr>
+                <tr><td><strong>Post-route hold timing</strong></td><td><span class="formula">time_design -post_route -hold</span>: record WNS, TNS, and number of violating endpoints.</td><td>ns; count</td></tr>
+                <tr><td><strong>Physical verification</strong></td><td>Innovus Check DRC and Check Connectivity: record DRC and connectivity violation counts separately.</td><td>Counts</td></tr>
+                <tr><td><strong>Physical power components</strong></td><td>Innovus power-analysis log: record internal, switching, leakage, and reported total power.</td><td>Use report unit</td></tr>
+                <tr><td><strong>Rail-analysis result</strong></td><td>Rail report/plot: record minimum VDD or worst IR drop when numeric data is available; otherwise record whether red regions appear.</td><td>V or mV; Yes/No</td></tr>
+                <tr><td><strong>GDSII output</strong></td><td>Stream-out result: record successful generation and the counter GDSII file size.</td><td>Status; bytes</td></tr>
+                <tr><td><strong>Gate-level simulation</strong></td><td>GLS log and waveform: Pass/Fail; record SDF annotation warning/error count.</td><td>Status; count</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="manual-callout acceptance-callout"><strong>Acceptance check:</strong> The final design passes only when equivalence and GLS pass, setup and hold WNS are non-negative, and DRC/connectivity violation counts are zero. Explain any exception allowed by the instructor.</div>
+        </section>
+        <section class="manual-section-card" id="lab-1-questions">
+          <h3>8. Post-Lab Questions</h3>
+          <div class="table-wrap">
+            <table class="manual-table compact" aria-label="Post-lab questions">
+              <thead><tr><th>#</th><th>Question</th></tr></thead>
+              <tbody>
+                <tr><td><span class="stage-number">1</span></td><td>Why is equivalence checking required even after RTL simulation passes?</td></tr>
+                <tr><td><span class="stage-number">2</span></td><td>Which files connect synthesis to physical implementation, and what information does each provide?</td></tr>
+                <tr><td><span class="stage-number">3</span></td><td>How do clock-tree synthesis and parasitic extraction change the timing model of the counter?</td></tr>
+                <tr><td><span class="stage-number">4</span></td><td>What is the difference between a logical-equivalence failure, a timing violation, a DRC violation, and a connectivity violation?</td></tr>
+                <tr><td><span class="stage-number">5</span></td><td>Why must the SDF file match the exact gate-level or post-route netlist used in GLS?</td></tr>
+                <tr><td><span class="stage-number">6</span></td><td>Which verification activities are intentionally absent because Module 4, Lab 5-2, and Module 6 were excluded?</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+      <!-- LAB 2: Placeholder content. -->
       <article class="lab-content" id="lab-2" data-lab-content="2" hidden>
         <div class="lab-header-card">
           <span class="lab-index">LAB 02</span>
           <h2>Lab 2: Title</h2>
         </div>
-        <section class="manual-section-card">
+        <section class="manual-section-card" id="lab-2-objectives">
           <h3>Objectives</h3>
           <ul>
             <li class="placeholder-copy">Add the first learning objective for Lab 2.</li>
@@ -351,7 +1033,7 @@
             <li class="placeholder-copy">Add any additional objectives as required.</li>
           </ul>
         </section>
-        <section class="manual-section-card">
+        <section class="manual-section-card" id="lab-2-tasks">
           <h3>Tasks</h3>
           <ol>
             <li class="placeholder-copy">Add Task 1 for Lab 2.</li>
@@ -360,12 +1042,13 @@
           </ol>
         </section>
       </article>
+      <!-- LAB 3: Placeholder content. -->
       <article class="lab-content" id="lab-3" data-lab-content="3" hidden>
         <div class="lab-header-card">
           <span class="lab-index">LAB 03</span>
           <h2>Lab 3: Title</h2>
         </div>
-        <section class="manual-section-card">
+        <section class="manual-section-card" id="lab-3-objectives">
           <h3>Objectives</h3>
           <ul>
             <li class="placeholder-copy">Add the first learning objective for Lab 3.</li>
@@ -373,7 +1056,7 @@
             <li class="placeholder-copy">Add any additional objectives as required.</li>
           </ul>
         </section>
-        <section class="manual-section-card">
+        <section class="manual-section-card" id="lab-3-tasks">
           <h3>Tasks</h3>
           <ol>
             <li class="placeholder-copy">Add Task 1 for Lab 3.</li>
@@ -382,22 +1065,24 @@
           </ol>
         </section>
       </article>
-      <div class="editing-note"><strong>Editing note:</strong> the current lab headings, Objectives, and Tasks are placeholder content. Replace them with the exact material from your lab manual when available.</div>
     </div>
   </section>
 </main>
 
 <footer class="simple-footer">© 2026 Course Website | Designed by Rehan Naeem</footer>
 <script src="script.js"></script>
+<!-- Lab-panel navigation and subtopic behavior. -->
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   const labButtons = Array.from(document.querySelectorAll('.lab-nav-button'));
   const labPanels = Array.from(document.querySelectorAll('[data-lab-content]'));
+  const labSubnavs = Array.from(document.querySelectorAll('[data-lab-subnav]'));
+  const labSubtopicLinks = Array.from(document.querySelectorAll('.lab-subnav a[data-lab]'));
 
-  function showLab(labNumber, updateHash = true) {
-    const number = String(labNumber);
-    const selectedButton = labButtons.find(button => button.dataset.lab === number);
-    const selectedPanel = labPanels.find(panel => panel.dataset.labContent === number);
+  function showLab(labKey, updateHash = true) {
+    const key = String(labKey);
+    const selectedButton = labButtons.find(button => button.dataset.lab === key);
+    const selectedPanel = labPanels.find(panel => panel.dataset.labContent === key);
     if (!selectedButton || !selectedPanel) return;
 
     labButtons.forEach(button => {
@@ -412,9 +1097,20 @@ document.addEventListener('DOMContentLoaded', function () {
       panel.hidden = !isActive;
     });
 
+    labSubnavs.forEach(subnav => {
+      subnav.hidden = subnav.dataset.labSubnav !== key;
+    });
+
     if (updateHash) {
-      history.replaceState(null, '', '#lab-' + number);
+      history.replaceState(null, '', '#lab-' + key);
     }
+  }
+
+  function labKeyFromHash() {
+    const hash = window.location.hash;
+    return labPanels
+      .map(panel => panel.dataset.labContent)
+      .find(key => hash === '#lab-' + key || hash.startsWith('#lab-' + key + '-'));
   }
 
   labButtons.forEach(button => {
@@ -423,18 +1119,17 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  const hashMatch = window.location.hash.match(/^#lab-(\d{1,2})$/);
-  if (hashMatch && Number(hashMatch[1]) >= 1 && Number(hashMatch[1]) <= 3) {
-    showLab(hashMatch[1], false);
-  } else {
-    showLab('1', false);
-  }
+  labSubtopicLinks.forEach(link => {
+    link.addEventListener('click', function () {
+      showLab(link.dataset.lab, false);
+    });
+  });
+
+  showLab(labKeyFromHash() || 'guide', false);
 
   window.addEventListener('hashchange', function () {
-    const match = window.location.hash.match(/^#lab-(\d{1,2})$/);
-    if (match && Number(match[1]) >= 1 && Number(match[1]) <= 3) {
-      showLab(match[1], false);
-    }
+    const key = labKeyFromHash();
+    if (key) showLab(key, false);
   });
 
   const toggle = document.querySelector('.menu-toggle');
