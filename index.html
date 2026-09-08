@@ -106,7 +106,7 @@ footer a:focus-visible {
 /* Increased typography for top navigation and schedule resource buttons.
    The stronger selector and !important ensure styles.css cannot override it. */
 header.site-header nav#primary-nav.nav-links > a {
-  font-size: clamp(1.20rem, 1.45vw, 1.35rem) !important;
+  font-size: clamp(1.1rem, 1.4vw, 1.3rem) !important;
   line-height: 1.35 !important;
   font-weight: 700 !important;
 }
@@ -684,6 +684,76 @@ button {
     margin-bottom: 0;
   }
 }
+
+/* =========================================================
+   Assessments
+   Edit the table rows in the #assessments section below.
+   ========================================================= */
+.assessment-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.assessment-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid rgba(47, 102, 220, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 12px 30px rgba(35, 83, 156, 0.09);
+}
+
+.assessment-card h3 {
+  margin: 0;
+  padding: 18px 20px;
+  color: #173844;
+  font-size: 1.3rem;
+}
+
+.assessment-table {
+  width: 100%;
+  border-collapse: collapse;
+  font: inherit;
+}
+
+.assessment-table th,
+.assessment-table td {
+  padding: 14px 18px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.assessment-table th {
+  background: linear-gradient(135deg, #2f66dc, #4389e8);
+  color: #ffffff;
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.assessment-table th + th,
+.assessment-table td + td {
+  width: 32%;
+  border-left: 1px solid rgba(47, 102, 220, 0.18);
+  text-align: center;
+}
+
+.assessment-table tbody tr:not(:last-child) td {
+  border-bottom: 1px solid rgba(47, 102, 220, 0.14);
+}
+
+.assessment-table tbody tr:nth-child(even) {
+  background: rgba(238, 246, 255, 0.58);
+}
+
+@media (max-width: 760px) {
+  .assessment-grid {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
 </head>
 <body>
@@ -704,6 +774,7 @@ button {
 <a href="#about">About</a>
 <a href="#outcomes">Outcomes</a>
 <a href="#policy">Policy</a>
+<a href="#assessments">Assessments</a>
 <a href="#schedule">Schedule &amp; resources</a>
 <a href="#contact">Contact</a>
 </nav>
@@ -771,7 +842,42 @@ button {
 <article class="policy-item reveal"><span class="policy-number">03</span><p>Bring the lab manual in soft form. Mobile or smart phones may not be used to view it; marks may be deducted for doing so.</p></article>
 <article class="policy-item reveal"><span class="policy-number">04</span><p>The lab manual and lab/theory slides are updated regularly. Download the latest versions before each lab, and do not print the entire lab manual.</p></article>
 <article class="policy-item reveal"><span class="policy-number">05</span><p>Before leaving, return chairs to their proper place, switch off the lab computer, fans and lights, do not write on tables, and do not leave wrappers or other litter. Ethics, punctuality, attitude and discipline are also graded.</p></article>
+</div>
+</section>
+<section class="section assessment-section" id="assessments">
+<div class="section-label">Assessments</div>
 
+<div class="assessment-grid">
+  <article class="assessment-card reveal">
+    <h3>Theory</h3>
+    <table class="assessment-table" aria-label="Theory assessment weightage">
+      <thead>
+        <tr><th>Assessment</th><th>Weightage %</th><th>Schedule</th></tr>
+      </thead>
+      <!-- Replace the placeholder rows below with the theory assessments. -->
+      <tbody>
+        <tr><td>Quiz 1</td><td>15</td><td>week 4</td></tr>
+        <tr><td>Mid Term Exam</td><td>30</td><td>week 8</td></tr>
+        <tr><td>Quiz 2</td><td>15</td><td>week 12</td></tr>
+        <tr><td>Final Exam</td><td>40</td><td>week 16</td></tr>
+      </tbody>
+    </table>
+  </article>
+  <article class="assessment-card reveal">
+    <h3>Lab</h3>
+    <table class="assessment-table" aria-label="Lab assessment weightage">
+      <thead>
+        <tr><th>Assessment</th><th>Weightage %</th><th>Schedule</th></tr>
+      </thead>
+      <!-- Replace the placeholder rows below with the lab assessments. -->
+      <tbody>
+        <tr><td>Labs</td><td>60</td><td>TBA</td></tr>
+        <tr><td>CEP</td><td>40</td><td>CEP should be completed by second last week of the semester.</td></tr>
+        
+      </tbody>
+    </table>
+  </article>
+</div>
 </section>
 <section class="section schedule-section" id="schedule">
 <div class="section-heading-row">
