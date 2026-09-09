@@ -6,6 +6,43 @@
 <meta content="EE476 VLSI Lab Manual — Department of Electrical Engineering, UET Lahore" name="description"/>
 <meta content="#edfaff" name="theme-color"/>
 <title>EE476 · VLSI Lab Manual</title>
+<script>
+/* Apply the same saved color theme used by index.html before the page paints. */
+(function () {
+  const storageKey = "ee476-color-theme";
+  try {
+    const savedTheme = localStorage.getItem(storageKey);
+    if (savedTheme === "dark" || savedTheme === "light") {
+      document.documentElement.dataset.theme = savedTheme;
+    }
+  } catch (_error) {}
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const button = document.getElementById("night-mode-toggle");
+    const icon = document.getElementById("night-mode-icon");
+    const label = document.getElementById("night-mode-label");
+    const themeMeta = document.querySelector('meta[name="theme-color"]');
+    if (!button) return;
+
+    function displayTheme(theme) {
+      const isDark = theme === "dark";
+      document.documentElement.dataset.theme = isDark ? "dark" : "light";
+      button.setAttribute("aria-pressed", String(isDark));
+      button.setAttribute("aria-label", isDark ? "Switch to light mode" : "Switch to night mode");
+      if (icon) icon.textContent = isDark ? "☀" : "☾";
+      if (label) label.textContent = isDark ? "Light" : "Night";
+      if (themeMeta) themeMeta.content = isDark ? "#090f1d" : "#edfaff";
+    }
+
+    displayTheme(document.documentElement.dataset.theme);
+    button.addEventListener("click", function () {
+      const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      displayTheme(nextTheme);
+      try { localStorage.setItem(storageKey, nextTheme); } catch (_error) {}
+    });
+  });
+})();
+</script>
 <link href="styles.css" rel="stylesheet"/>
 <style>
   body {
@@ -886,7 +923,7 @@
 
   .dashboard-metrics {
     display: grid;
-    grid-template-columns: repeat(3,minmax(0,1fr));
+    grid-template-columns: repeat(4,minmax(0,1fr));
     gap: 12px;
     margin-bottom: 18px;
   }
@@ -947,12 +984,50 @@
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: #e5edf6;
-    color: #70879a;
+    background: #fde8e8;
+    color: #b42318;
     font-size: .66rem;
     font-weight: 900;
   }
   .dashboard-task-dot.is-complete { background: #dff5ea; color: #147048; }
+  .dashboard-section-card {
+    margin-top: 24px;
+    padding: 20px;
+    border: 1px solid rgba(47,102,220,.16);
+    border-radius: 14px;
+    background: #fff;
+  }
+  .dashboard-section-card h3 { margin: 0 0 5px; }
+  .dashboard-section-card > p { margin: 0 0 17px; color: #607587; }
+  .weekly-week-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(60px, 1fr));
+    gap: 6px;
+    min-width: 300px;
+  }
+  .weekly-week-chip {
+    display: grid;
+    gap: 4px;
+    padding: 6px;
+    border: 1px solid #d7e2ee;
+    border-radius: 8px;
+    background: #f8fbff;
+    text-align: center;
+  }
+  .weekly-week-chip strong { color: #405d70; font-size: .7rem; }
+  .weekly-marker-row { display: flex; justify-content: center; gap: 4px; }
+  .weekly-task-marker {
+    width: 22px;
+    height: 20px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+    background: #fde8e8;
+    color: #b42318;
+    font-size: .66rem;
+    font-weight: 900;
+  }
+  .weekly-task-marker.is-complete { background: #dff5ea; color: #147048; }
   .dashboard-roster-card {
     margin-top: 22px;
     padding: 20px;
@@ -1054,6 +1129,162 @@
   @media (prefers-reduced-motion: reduce) {
     .lab-content { animation: none; }
   }
+
+  /* =======================================================
+     Persistent night mode shared with the course home page
+     ======================================================= */
+  .night-mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 42px;
+    white-space: nowrap;
+  }
+
+  html[data-theme="dark"] body {
+    color: #e8eef8;
+    background:
+      radial-gradient(circle at 85% 8%,rgba(47,102,220,.20),transparent 35%),
+      linear-gradient(135deg,#090f1d 0%,#0d1526 55%,#111d34 100%);
+  }
+  html[data-theme="dark"] .site-header {
+    border-bottom-color: #2b3955;
+    background: rgba(10,17,31,.92);
+  }
+  html[data-theme="dark"] .brand-copy strong,
+  html[data-theme="dark"] .nav-links a { color: #e8eef8 !important; }
+  html[data-theme="dark"] .brand-copy small { color: #aebbd0 !important; }
+  html[data-theme="dark"] .manual-hero {
+    border-bottom-color: #2b3955;
+    background:
+      linear-gradient(rgba(85,126,215,.09) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(85,126,215,.09) 1px,transparent 1px),
+      linear-gradient(135deg,#090f1d 0%,#10192c 100%);
+    background-size: 44px 44px,44px 44px,auto;
+  }
+  html[data-theme="dark"] .lab-sidebar,
+  html[data-theme="dark"] .lab-header-card,
+  html[data-theme="dark"] #lab-1 .table-wrap,
+  html[data-theme="dark"] #lab-concepts .table-wrap,
+  html[data-theme="dark"] #lab-concepts .concept-code,
+  html[data-theme="dark"] .video-card,
+  html[data-theme="dark"] .guide-card,
+  html[data-theme="dark"] .concept-card,
+  html[data-theme="dark"] .progress-summary-card,
+  html[data-theme="dark"] .progress-dialog-header,
+  html[data-theme="dark"] .progress-auth-card,
+  html[data-theme="dark"] .progress-user-banner,
+  html[data-theme="dark"] .dashboard-metric,
+  html[data-theme="dark"] .dashboard-table-wrap,
+  html[data-theme="dark"] .dashboard-section-card,
+  html[data-theme="dark"] .dashboard-roster-card {
+    border-color: #30415f;
+    background: #111b2e;
+    color: #e8eef8;
+    box-shadow: 0 12px 30px rgba(0,0,0,.18);
+  }
+  html[data-theme="dark"] .lab-nav-button,
+  html[data-theme="dark"] .lab-nav-button .nav-topic { color: #dce5f2; }
+  html[data-theme="dark"] .lab-nav-button:hover,
+  html[data-theme="dark"] .lab-nav-button.active,
+  html[data-theme="dark"] .lab-subnav a:hover,
+  html[data-theme="dark"] .lab-subnav a.active {
+    border-color: #40557b;
+    background: #172844;
+    color: #a9c0ff;
+  }
+  html[data-theme="dark"] .sidebar-heading,
+  html[data-theme="dark"] .nav-label,
+  html[data-theme="dark"] .lab-subnav a { color: #9eabc0; }
+  html[data-theme="dark"] .manual-section-card {
+    border-bottom-color: #30415f;
+  }
+  html[data-theme="dark"] .manual-section-card h3,
+  html[data-theme="dark"] .concept-subheading,
+  html[data-theme="dark"] .guide-card h4,
+  html[data-theme="dark"] .concept-card h4,
+  html[data-theme="dark"] .video-card strong { color: #e8eef8; }
+  html[data-theme="dark"] .manual-section-card p,
+  html[data-theme="dark"] .manual-section-card li,
+  html[data-theme="dark"] .guide-card p,
+  html[data-theme="dark"] .concept-card p,
+  html[data-theme="dark"] .video-card small,
+  html[data-theme="dark"] .progress-auth-card p,
+  html[data-theme="dark"] .progress-user-banner span,
+  html[data-theme="dark"] .dashboard-metric span,
+  html[data-theme="dark"] .dashboard-section-card > p,
+  html[data-theme="dark"] .dashboard-roster-card p { color: #b5c1d2; }
+  html[data-theme="dark"] .manual-table {
+    border-top-color: #60708a;
+    border-bottom-color: #60708a;
+    color: #dbe3ef;
+  }
+  html[data-theme="dark"] .manual-table th,
+  html[data-theme="dark"] .manual-table td {
+    border-right-color: #344663;
+    border-bottom-color: #344663;
+  }
+  html[data-theme="dark"] .manual-table td,
+  html[data-theme="dark"] .manual-table td strong { color: #dbe3ef; }
+  html[data-theme="dark"] #lab-1 .manual-table tbody tr:hover,
+  html[data-theme="dark"] #lab-concepts .manual-table tbody tr:hover { background: #17243a; }
+  html[data-theme="dark"] .manual-callout,
+  html[data-theme="dark"] .source-quote,
+  html[data-theme="dark"] .concept-note,
+  html[data-theme="dark"] .editing-note,
+  html[data-theme="dark"] .flow-steps li {
+    border-color: #344663;
+    background: #142238;
+    color: #c4cfde;
+  }
+  html[data-theme="dark"] .manual-callout strong { color: #dce9f8; }
+  html[data-theme="dark"] .acceptance-callout { background: #123128; }
+  html[data-theme="dark"] .formula,
+  html[data-theme="dark"] .manual-section-card a:not(.video-link) { color: #8eb2ff; }
+  html[data-theme="dark"] .concept-code {
+    border-color: #344663;
+    background: #0a1322;
+    color: #dbe7f5;
+  }
+  html[data-theme="dark"] .concept-figure img { border-color: #344663; background: #111b2e; }
+  html[data-theme="dark"] .progress-dialog {
+    border-color: #344663;
+    background: #0b1424;
+    color: #e8eef8;
+  }
+  html[data-theme="dark"] .progress-icon-button { background: #1a2941; color: #e8eef8; }
+  html[data-theme="dark"] .progress-field { color: #e8eef8; }
+  html[data-theme="dark"] .progress-field input,
+  html[data-theme="dark"] .progress-field select,
+  html[data-theme="dark"] #dashboard-roster-file {
+    border-color: #40516c;
+    background: #0c1627;
+    color: #f5f7fb;
+  }
+  html[data-theme="dark"] .progress-secondary-button,
+  html[data-theme="dark"] .task-completion-button {
+    border-color: #40557b;
+    background: #172844;
+    color: #9db8ff;
+  }
+  html[data-theme="dark"] .task-completion-button[aria-pressed="true"] {
+    border-color: #2e745e;
+    background: #14392f;
+    color: #9be5c9;
+  }
+  html[data-theme="dark"] .progress-track { background: #26344c; }
+  html[data-theme="dark"] .progress-message { background: #172844; color: #bfd0e5; }
+  html[data-theme="dark"] .progress-message.is-error { background: #3a1d25; color: #ffb4b4; }
+  html[data-theme="dark"] .dashboard-table th { background: #1a2a45; color: #c9d6e8; }
+  html[data-theme="dark"] .dashboard-table td { border-bottom-color: #344663; color: #dbe3ef; }
+  html[data-theme="dark"] .dashboard-table small { color: #aebbd0 !important; }
+  html[data-theme="dark"] .weekly-week-chip {
+    border-color: #344663;
+    background: #0f1a2d;
+  }
+  html[data-theme="dark"] .weekly-week-chip strong { color: #b9c8dc; }
+  html[data-theme="dark"] .simple-footer { border-top-color: #2b3955; color: #b8c4d4; }
 </style>
 </head>
 <body>
@@ -1097,7 +1328,10 @@
       Lab progress login
     </button>
   </nav>
-  <button aria-hidden="true" hidden id="themeToggle" tabindex="-1" type="button"></button>
+  <button class="theme-toggle night-mode-toggle" id="night-mode-toggle" type="button" aria-pressed="false" aria-label="Switch to night mode">
+    <span aria-hidden="true" id="night-mode-icon">☾</span>
+    <span id="night-mode-label">Night</span>
+  </button>
 </header>
 
 <main id="main">
@@ -1511,8 +1745,7 @@ Routing is a crucial stage in the physical design flow. It involves:
 
 
 </ol>
-<p>
-Once routing is complete, the design undergoes finishing, which includes:
+<p>Once routing is complete, the design undergoes finishing, which includes:</p>
 
 <ol>
 <li><b>Filler Cells:</b> Inserting additional filler cells in areas where standard cells are not placed, ensuring continuous power rails and preventing open areas.</li>
@@ -1520,11 +1753,6 @@ Once routing is complete, the design undergoes finishing, which includes:
 </ol>
 
 <p>Finally, the outcome of this exercise will be DEF file, which represents the layout of all the cells and nets in your design. The DEF file can then be converted to a GDS file, the standard format used to represent the final design layout. Eventually, the GDS file will be sent for manufacturing, but first, Design Rule Checking (DRC) and Layout Versus Schematic (LVS) need to be performed</p>
-
-
-</p>
-  </p>
-
 <h4 class="concept-subheading">Routing Resources</h4>
         <p>Before we start routing, we should be familiar with the metal stack, as it plays a significant role in the routing step since it determines the routing resources we have to route our design. 
           The routing direction alternates between neighboring layers and  the wires have different dimensions on different layers.
@@ -1550,8 +1778,7 @@ switch logic gates from one state to another. While there are also important sou
 (mainly due to leakage currents) and short-circuit (or crossover) power, those effects are usually smaller in well-designed CMOS processes, especially under nominal voltages and conservative fabrication technologies. 
 
 <h4 class="concept-subheading">Sources of Power Dissipation in CMOS</h4>
-<p>
-  In static CMOS circuits, four main phenomena cause energy dissipation:
+<p>In static CMOS circuits, four main phenomena cause energy dissipation:</p>
 <ol>
   <li>Charging and Discharging of Node Capacitances (Dynamic)</li>
   <li>Short-Circuit Currents (Dynamic)</li>
@@ -1566,11 +1793,9 @@ switch logic gates from one state to another. While there are also important sou
   <li><b>Internal Power:</b> The energy dissipated in the internal nodes of a standard cell due to driving internal transistors and internal node parasitics. This also covers short-circuit currents internal to each gate.</li>
   <li><b>Switching Power:</b> The power associated with charging and discharging the external load, namely the parasitic interconnect capacitances and the input gate capacitances of any cells connected to the output net.</li>
 </ol>
-</p>
 
 <h4 class="concept-subheading">Power Analysis: Generic Flow</h4>
-<p>
-Post-layout power analysis is a critical step in the digital design flow. It allows designers to estimate the actual power consumption of an integrated circuit based on its physical implementation, operating conditions, and functional behavior. Accurate power estimation helps assess the design's energy efficiency, ensure thermal reliability, and guide architectural or physical-level optimizations. There are two common methodologies for evaluating dynamic (switching-related) power:
+<p>Post-layout power analysis is a critical step in the digital design flow. It allows designers to estimate the actual power consumption of an integrated circuit based on its physical implementation, operating conditions, and functional behavior. Accurate power estimation helps assess the design's energy efficiency, ensure thermal reliability, and guide architectural or physical-level optimizations. There are two common methodologies for evaluating dynamic (switching-related) power:</p>
 <ol>
   <li><b>Statistical Power Analysis:</b> Statistical power analysis estimates switching activity based on a fixed average toggle probability, typically assuming uniform and independent switching across all nodes. It is fast and does not require functional simulation, but does not account for actual data patterns or circuit state. It is most useful for early design exploration or as a reference baseline.</li>
   <li><b>Stimuli-Based Power Analysis:</b> Stimuli-based power analysis uses signal activity captured during simulation, usually in the form of a VCD (Value Change Dump) file. The toggle information is mapped onto the post-layout design to compute real switching activity over time. This method is more accurate and reflects realistic circuit behavior under actual workloads or benchmarks, but requires a complete simulation setup and more runtime.</li>
@@ -1579,7 +1804,6 @@ Post-layout power analysis is a critical step in the digital design flow. It all
 <h4 class="concept-subheading">IR Drop</h4>
 <p>Power analysis provides critical insights into the energy consumption of a circuit, enabling us to identify the most power-hungry components and optimize their design. However, understanding power consumption alone is not enough to ensure reliable operation. The distribution of power across the chip, particularly how voltage levels vary due to current flow and resistive losses, plays a vital role in circuit performance. This phenomenon, known as IR drop, can cause voltage levels to dip below acceptable thresholds, leading to timing failures and degraded functionality.
 
-</p>
 </p>
 </section>
 
@@ -1879,7 +2103,7 @@ In VLSI design, manually checking DRC is impractical due to the vast number of w
       <div class="progress-user-banner">
         <div>
           <strong id="progress-instructor-name">Instructor dashboard</strong>
-          <span>Read-only student progress · equal task weighting</span>
+          <span>Read-only Lab 1 and weekly learning progress · equal activity weighting</span>
         </div>
         <div class="progress-button-row">
           <button class="progress-secondary-button" id="progress-dashboard-refresh" type="button">Refresh</button>
@@ -1889,10 +2113,12 @@ In VLSI design, manually checking DRC is impractical due to the vast number of w
 
       <div class="dashboard-metrics" aria-label="Class progress summary">
         <div class="dashboard-metric"><span>Rostered students</span><strong id="dashboard-student-count">0</strong></div>
-        <div class="dashboard-metric"><span>Class average</span><strong id="dashboard-class-average">0%</strong></div>
+        <div class="dashboard-metric"><span>Lab 1 class average</span><strong id="dashboard-class-average">0%</strong></div>
         <div class="dashboard-metric"><span>Completed Lab 1</span><strong id="dashboard-complete-count">0</strong></div>
+        <div class="dashboard-metric"><span>Weekly class average</span><strong id="dashboard-weekly-average">0%</strong></div>
       </div>
 
+      <h3>Lab 1 progress</h3>
       <div class="dashboard-toolbar">
         <label class="progress-field">
           Search roster
@@ -1928,6 +2154,45 @@ In VLSI design, manually checking DRC is impractical due to the vast number of w
         </table>
       </div>
       <p class="progress-message" id="dashboard-message" hidden></p>
+
+      <section class="dashboard-section-card" aria-labelledby="weekly-dashboard-title">
+        <h3 id="weekly-dashboard-title">Weekly learning progress</h3>
+        <p>Each week has two equally weighted activities: <strong>S</strong> = slides read and <strong>H</strong> = homework completed. Red markers identify activities not completed.</p>
+        <div class="dashboard-toolbar">
+          <label class="progress-field">
+            Search roster
+            <input class="progress-search" id="weekly-dashboard-search" type="search" placeholder="Roll number, name, or email"/>
+          </label>
+          <label class="progress-field">
+            Progress filter
+            <select id="weekly-dashboard-filter">
+              <option value="all">All students</option>
+              <option value="not-started">Not started</option>
+              <option value="in-progress">In progress</option>
+              <option value="complete">Complete</option>
+            </select>
+          </label>
+          <button class="progress-secondary-button" id="weekly-dashboard-download-csv" type="button">Download weekly CSV</button>
+        </div>
+        <div class="dashboard-table-wrap">
+          <table class="dashboard-table" aria-label="Student weekly learning progress dashboard">
+            <thead>
+              <tr>
+                <th>Roll number</th>
+                <th>Student</th>
+                <th>Account</th>
+                <th>Weeks</th>
+                <th>Progress</th>
+                <th>Last update</th>
+              </tr>
+            </thead>
+            <tbody id="weekly-dashboard-progress-body">
+              <tr><td colspan="6">No weekly progress data loaded.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="progress-message" id="weekly-dashboard-message" hidden></p>
+      </section>
 
       <section class="dashboard-roster-card">
         <h3>Manage the student roster</h3>
@@ -7830,6 +8095,7 @@ window.LAB_PROGRESS_CONFIG = {
 
   const TASK_ID_PREFIX = "lab1-task-";
   const TASK_COUNT = 7;
+  const WEEKLY_GROUP_ID = "course-weekly";
   const config = window.LAB_PROGRESS_CONFIG;
   const state = {
     client: null,
@@ -7838,6 +8104,9 @@ window.LAB_PROGRESS_CONFIG = {
     progress: new Map(),
     dashboardRows: [],
     dashboardLoaded: false,
+    weeklyDashboardRows: [],
+    weeklyDashboardLoaded: false,
+    weeklyTasks: [],
     pendingEmail: "",
     authNotice: "",
     authNoticeIsError: false
@@ -7963,6 +8232,9 @@ window.LAB_PROGRESS_CONFIG = {
     document.getElementById("dashboard-search").addEventListener("input", renderDashboardRows);
     document.getElementById("dashboard-filter").addEventListener("change", renderDashboardRows);
     document.getElementById("dashboard-download-csv").addEventListener("click", downloadProgressCsv);
+    document.getElementById("weekly-dashboard-search").addEventListener("input", renderWeeklyDashboardRows);
+    document.getElementById("weekly-dashboard-filter").addEventListener("change", renderWeeklyDashboardRows);
+    document.getElementById("weekly-dashboard-download-csv").addEventListener("click", downloadWeeklyProgressCsv);
     document.getElementById("dashboard-roster-template").addEventListener("click", downloadRosterTemplate);
     document.getElementById("dashboard-import-roster").addEventListener("click", importRosterCsv);
   }
@@ -8051,6 +8323,7 @@ window.LAB_PROGRESS_CONFIG = {
     state.profile = null;
     state.progress.clear();
     state.dashboardLoaded = false;
+    state.weeklyDashboardLoaded = false;
 
     if (!session || !state.client) {
       renderStudentProgress();
@@ -8218,21 +8491,43 @@ window.LAB_PROGRESS_CONFIG = {
 
   async function loadDashboard() {
     if (!state.client || !state.profile || state.profile.role !== "instructor") return;
-    setDashboardMessage("Loading roster progress…", false);
+    setDashboardMessage("Loading Lab 1 and weekly progress…", false);
+    setWeeklyDashboardMessage("Loading weekly progress…", false);
 
-    const result = await state.client.rpc("instructor_lab_progress", {
-      requested_lab_id: config.labId
-    });
+    const results = await Promise.all([
+      state.client.rpc("instructor_lab_progress", { requested_lab_id: config.labId }),
+      state.client.rpc("instructor_lab_progress", { requested_lab_id: WEEKLY_GROUP_ID }),
+      state.client
+        .from("lab_tasks")
+        .select("task_id,task_order,title")
+        .eq("lab_id", WEEKLY_GROUP_ID)
+        .order("task_order")
+    ]);
+    const labResult = results[0];
+    const weeklyResult = results[1];
+    const taskResult = results[2];
 
-    if (result.error) {
-      setDashboardMessage("Dashboard could not be loaded: " + result.error.message, true);
+    if (labResult.error || weeklyResult.error || taskResult.error) {
+      const error = labResult.error || weeklyResult.error || taskResult.error;
+      setDashboardMessage("Dashboard could not be loaded: " + error.message, true);
+      setWeeklyDashboardMessage("Weekly dashboard could not be loaded: " + error.message, true);
       return;
     }
 
-    state.dashboardRows = result.data || [];
+    state.dashboardRows = labResult.data || [];
     state.dashboardLoaded = true;
+    state.weeklyDashboardRows = weeklyResult.data || [];
+    state.weeklyDashboardLoaded = true;
+    state.weeklyTasks = taskResult.data || [];
     setDashboardMessage("", false);
+    setWeeklyDashboardMessage(
+      state.weeklyTasks.length
+        ? ""
+        : "Weekly activities are not installed yet. Run course-weekly-progress-setup.sql in the Supabase SQL Editor.",
+      state.weeklyTasks.length === 0
+    );
     renderDashboardRows();
+    renderWeeklyDashboardRows();
   }
 
   function filteredDashboardRows() {
@@ -8314,6 +8609,119 @@ window.LAB_PROGRESS_CONFIG = {
     renderDashboardMetrics();
   }
 
+  function filteredWeeklyDashboardRows() {
+    const query = document.getElementById("weekly-dashboard-search").value.trim().toLowerCase();
+    const filter = document.getElementById("weekly-dashboard-filter").value;
+    const total = state.weeklyTasks.length;
+
+    return state.weeklyDashboardRows.filter(function (row) {
+      const count = Number(row.completed_count || 0);
+      const searchable = [row.roll_number, row.full_name, row.email].join(" ").toLowerCase();
+      const matchesQuery = !query || searchable.includes(query);
+      const matchesFilter =
+        filter === "all" ||
+        (filter === "not-started" && count === 0) ||
+        (filter === "in-progress" && count > 0 && count < total) ||
+        (filter === "complete" && total > 0 && count === total);
+      return matchesQuery && matchesFilter;
+    });
+  }
+
+  function weeklyTaskGroups() {
+    const groups = new Map();
+    state.weeklyTasks.forEach(function (task) {
+      const match = task.task_id.match(/^course-week-(\d+)-(slides|homework)$/);
+      if (!match) return;
+      const week = match[1];
+      if (!groups.has(week)) groups.set(week, {});
+      groups.get(week)[match[2]] = task.task_id;
+    });
+    return Array.from(groups.entries()).sort(function (left, right) {
+      return Number(left[0]) - Number(right[0]);
+    });
+  }
+
+  function renderWeeklyDashboardRows() {
+    if (!state.weeklyDashboardLoaded) return;
+    const body = document.getElementById("weekly-dashboard-progress-body");
+    const rows = filteredWeeklyDashboardRows();
+    const groups = weeklyTaskGroups();
+    const total = state.weeklyTasks.length;
+    body.replaceChildren();
+
+    if (!rows.length) {
+      const row = body.insertRow();
+      const cell = row.insertCell();
+      cell.colSpan = 6;
+      cell.textContent = "No students match the current weekly progress filter.";
+    }
+
+    rows.forEach(function (record) {
+      const completedIds = new Set(Array.isArray(record.completed_task_ids) ? record.completed_task_ids.filter(Boolean) : []);
+      const count = state.weeklyTasks.filter(function (task) { return completedIds.has(task.task_id); }).length;
+      const percent = total ? Math.round((count / total) * 100) : 0;
+      const row = body.insertRow();
+
+      addTextCell(row, record.roll_number || "—");
+      const studentCell = row.insertCell();
+      const name = document.createElement("strong");
+      const email = document.createElement("small");
+      name.textContent = record.full_name;
+      email.textContent = record.email;
+      email.style.display = "block";
+      email.style.color = "#607587";
+      studentCell.append(name, email);
+      addTextCell(row, record.activated ? "Activated" : "Not activated");
+
+      const weeksCell = row.insertCell();
+      const weekGrid = document.createElement("div");
+      weekGrid.className = "weekly-week-grid";
+      weekGrid.setAttribute("aria-label", count + " of " + total + " weekly activities complete");
+      groups.forEach(function (entry) {
+        const week = entry[0];
+        const tasks = entry[1];
+        const chip = document.createElement("div");
+        const label = document.createElement("strong");
+        const markers = document.createElement("div");
+        chip.className = "weekly-week-chip";
+        label.textContent = "W" + week;
+        markers.className = "weekly-marker-row";
+        [
+          { key: "slides", shortLabel: "S", longLabel: "slides read" },
+          { key: "homework", shortLabel: "H", longLabel: "homework completed" }
+        ].forEach(function (activity) {
+          const marker = document.createElement("span");
+          const taskId = tasks[activity.key];
+          const isComplete = Boolean(taskId && completedIds.has(taskId));
+          marker.className = "weekly-task-marker";
+          if (isComplete) marker.classList.add("is-complete");
+          marker.textContent = activity.shortLabel;
+          marker.title = "W" + week + " " + activity.longLabel + ": " + (isComplete ? "complete" : "not complete");
+          markers.appendChild(marker);
+        });
+        chip.append(label, markers);
+        weekGrid.appendChild(chip);
+      });
+      weeksCell.appendChild(weekGrid);
+
+      const progressCell = row.insertCell();
+      const progress = document.createElement("div");
+      const track = document.createElement("div");
+      const fill = document.createElement("span");
+      const value = document.createElement("strong");
+      progress.className = "dashboard-progress";
+      track.className = "progress-track";
+      fill.style.width = percent + "%";
+      value.textContent = percent + "%";
+      track.appendChild(fill);
+      progress.append(track, value);
+      progressCell.appendChild(progress);
+      addTextCell(row, formatDate(record.last_update));
+    });
+
+    renderDashboardMetrics();
+  }
+
   function addTextCell(row, text) {
     const cell = row.insertCell();
     cell.textContent = text;
@@ -8332,10 +8740,29 @@ window.LAB_PROGRESS_CONFIG = {
     document.getElementById("dashboard-student-count").textContent = String(studentCount);
     document.getElementById("dashboard-class-average").textContent = average + "%";
     document.getElementById("dashboard-complete-count").textContent = String(completeCount);
+
+    const weeklyStudentCount = state.weeklyDashboardRows.length;
+    const weeklyTotal = state.weeklyTasks.length;
+    const validTaskIds = new Set(state.weeklyTasks.map(function (task) { return task.task_id; }));
+    const weeklyCompleted = state.weeklyDashboardRows.reduce(function (sum, row) {
+      const ids = Array.isArray(row.completed_task_ids) ? row.completed_task_ids : [];
+      return sum + ids.filter(function (taskId) { return validTaskIds.has(taskId); }).length;
+    }, 0);
+    const weeklyAverage = weeklyStudentCount && weeklyTotal
+      ? Math.round((weeklyCompleted / (weeklyStudentCount * weeklyTotal)) * 100)
+      : 0;
+    document.getElementById("dashboard-weekly-average").textContent = weeklyAverage + "%";
   }
 
   function setDashboardMessage(message, isError) {
     const element = document.getElementById("dashboard-message");
+    element.textContent = message;
+    element.hidden = !message;
+    element.classList.toggle("is-error", Boolean(isError));
+  }
+
+  function setWeeklyDashboardMessage(message, isError) {
+    const element = document.getElementById("weekly-dashboard-message");
     element.textContent = message;
     element.hidden = !message;
     element.classList.toggle("is-error", Boolean(isError));
@@ -8371,6 +8798,48 @@ window.LAB_PROGRESS_CONFIG = {
       lines.push(values.map(csvEscape).join(","));
     });
     downloadTextFile("lab-1-progress.csv", lines.join("\n"), "text/csv;charset=utf-8");
+  }
+
+  function downloadWeeklyProgressCsv() {
+    if (!state.weeklyDashboardLoaded || !state.weeklyTasks.length) return;
+    const groups = weeklyTaskGroups();
+    const activityColumns = [];
+    groups.forEach(function (entry) {
+      activityColumns.push("week_" + entry[0] + "_slides", "week_" + entry[0] + "_homework");
+    });
+    const header = [
+      "roll_number",
+      "full_name",
+      "email",
+      "account_status"
+    ].concat(activityColumns, ["completed_activities", "total_activities", "progress_percent", "last_update"]);
+    const lines = [header.join(",")];
+
+    state.weeklyDashboardRows.forEach(function (row) {
+      const completedIds = new Set(Array.isArray(row.completed_task_ids) ? row.completed_task_ids.filter(Boolean) : []);
+      const completionValues = [];
+      groups.forEach(function (entry) {
+        const tasks = entry[1];
+        completionValues.push(
+          tasks.slides && completedIds.has(tasks.slides) ? "Complete" : "Not complete",
+          tasks.homework && completedIds.has(tasks.homework) ? "Complete" : "Not complete"
+        );
+      });
+      const count = state.weeklyTasks.filter(function (task) { return completedIds.has(task.task_id); }).length;
+      const values = [
+        row.roll_number,
+        row.full_name,
+        row.email,
+        row.activated ? "Activated" : "Not activated"
+      ].concat(completionValues, [
+        count,
+        state.weeklyTasks.length,
+        Math.round((count / state.weeklyTasks.length) * 100),
+        row.last_update || ""
+      ]);
+      lines.push(values.map(csvEscape).join(","));
+    });
+    downloadTextFile("weekly-learning-progress.csv", lines.join("\n"), "text/csv;charset=utf-8");
   }
 
   function downloadRosterTemplate() {
