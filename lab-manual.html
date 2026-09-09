@@ -1845,8 +1845,8 @@ In VLSI design, manually checking DRC is impractical due to the vast number of w
         <form id="progress-otp-form" hidden>
           <p class="progress-otp-context">A login code was sent to <strong id="progress-otp-email"></strong>.</p>
           <label class="progress-field">
-            Six-digit login code
-            <input class="progress-otp-code" id="progress-otp-code" name="token" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" minlength="6" maxlength="6" required placeholder="000000"/>
+            Login code
+            <input class="progress-otp-code" id="progress-otp-code" name="token" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,8}" minlength="6" maxlength="8" required placeholder="00000000"/>
           </label>
           <div class="progress-button-row">
             <button class="progress-primary-button" id="progress-otp-submit" type="submit">Verify and sign in</button>
@@ -7996,7 +7996,7 @@ window.LAB_PROGRESS_CONFIG = {
     document.getElementById("progress-otp-form").hidden = false;
     document.getElementById("progress-otp-code").value = "";
     document.getElementById("progress-otp-code").focus();
-    setAuthMessage("Enter the six-digit code from the newest email. The code expires after the period configured in Supabase.", false);
+    setAuthMessage("Enter the complete code from the newest email. The code expires after the period configured in Supabase.", false);
   }
 
   async function verifyLoginCode(event) {
@@ -8011,8 +8011,8 @@ window.LAB_PROGRESS_CONFIG = {
     const submit = document.getElementById("progress-otp-submit");
     const token = input.value.replace(/\s+/g, "");
 
-    if (!/^\d{6}$/.test(token)) {
-      setAuthMessage("Enter the complete six-digit code from your email.", true);
+    if (!/^\d{6,8}$/.test(token)) {
+      setAuthMessage("Enter the complete numerical code from your email.", true);
       input.focus();
       return;
     }
