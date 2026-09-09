@@ -7953,7 +7953,7 @@ window.LAB_PROGRESS_CONFIG = {
 
     const result = await state.client.auth.signInWithOtp({
       email: email,
-      options: { emailRedirectTo: window.location.href.split("#")[0] + "#lab-1" }
+      options: { emailRedirectTo: window.location.href.split("#")[0] }
     });
 
     submit.disabled = false;
