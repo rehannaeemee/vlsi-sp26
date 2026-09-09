@@ -824,6 +824,21 @@
     color: #263c4c;
     font: inherit;
   }
+  .progress-field input.progress-otp-code {
+    text-align: center;
+    font-size: 1.35rem;
+    font-weight: 850;
+    letter-spacing: .35em;
+    font-variant-numeric: tabular-nums;
+  }
+  .progress-otp-context {
+    margin: 0 0 4px;
+    padding: 11px 13px;
+    border-radius: 10px;
+    background: #f2f7ff;
+    color: #34566d !important;
+    overflow-wrap: anywhere;
+  }
   .progress-primary-button,
   .progress-secondary-button {
     min-height: 42px;
@@ -1806,7 +1821,7 @@ In VLSI design, manually checking DRC is impractical due to the vast number of w
 
 <!--
   ROSTER-ACTIVATION PROGRESS PORTAL
-  Students sign in with a passwordless email link. Their name and roll number
+  Students sign in with a one-time code sent by email. Their name and roll number
   are taken from the instructor-managed roster, never entered by the student.
 -->
 <dialog class="progress-dialog" id="progress-portal" aria-labelledby="progress-portal-title">
@@ -1819,15 +1834,26 @@ In VLSI design, manually checking DRC is impractical due to the vast number of w
     <section class="progress-portal-panel" id="progress-auth-panel">
       <div class="progress-auth-card">
         <h3>Activate or access your account</h3>
-        <p>Use the email address registered by your instructor. A secure, passwordless sign-in link will be emailed to you. Your roll number is assigned from the course roster.</p>
+        <p>Use the email address registered by your instructor. A one-time login code will be emailed to you. Your roll number is assigned from the course roster.</p>
         <form id="progress-login-form">
           <label class="progress-field">
             Roster email address
             <input id="progress-login-email" name="email" type="email" autocomplete="email" required placeholder="student@uet.edu.pk"/>
           </label>
-          <button class="progress-primary-button" id="progress-login-submit" type="submit">Email me a sign-in link</button>
+          <button class="progress-primary-button" id="progress-login-submit" type="submit">Email me a login code</button>
         </form>
-        <p class="progress-message" id="progress-auth-message" hidden></p>
+        <form id="progress-otp-form" hidden>
+          <p class="progress-otp-context">A login code was sent to <strong id="progress-otp-email"></strong>.</p>
+          <label class="progress-field">
+            Six-digit login code
+            <input class="progress-otp-code" id="progress-otp-code" name="token" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" minlength="6" maxlength="6" required placeholder="000000"/>
+          </label>
+          <div class="progress-button-row">
+            <button class="progress-primary-button" id="progress-otp-submit" type="submit">Verify and sign in</button>
+            <button class="progress-secondary-button" id="progress-otp-restart" type="button">Use another email</button>
+          </div>
+        </form>
+        <p class="progress-message" id="progress-auth-message" role="status" aria-live="polite" hidden></p>
       </div>
     </section>
 
@@ -7784,7 +7810,7 @@ document.addEventListener('DOMContentLoaded', function () {
 })();
 </script>
 
-<!-- Supabase supplies roster activation, passwordless login, and persistent progress. -->
+<!-- Supabase supplies roster activation, email OTP login, and persistent progress. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ==================================================================
@@ -7812,6 +7838,7 @@ window.LAB_PROGRESS_CONFIG = {
     progress: new Map(),
     dashboardRows: [],
     dashboardLoaded: false,
+    pendingEmail: "",
     authNotice: "",
     authNoticeIsError: false
   };
@@ -7925,7 +7952,9 @@ window.LAB_PROGRESS_CONFIG = {
       if (event.target === portal) portal.close();
     });
 
-    document.getElementById("progress-login-form").addEventListener("submit", sendLoginLink);
+    document.getElementById("progress-login-form").addEventListener("submit", sendLoginCode);
+    document.getElementById("progress-otp-form").addEventListener("submit", verifyLoginCode);
+    document.getElementById("progress-otp-restart").addEventListener("click", resetOtpLogin);
     document.querySelectorAll("[data-progress-sign-out]").forEach(function (button) {
       button.addEventListener("click", signOut);
     });
@@ -7938,7 +7967,7 @@ window.LAB_PROGRESS_CONFIG = {
     document.getElementById("dashboard-import-roster").addEventListener("click", importRosterCsv);
   }
 
-  async function sendLoginLink(event) {
+  async function sendLoginCode(event) {
     event.preventDefault();
     if (!state.client) {
       setAuthMessage(state.authNotice || "The progress service is not configured.", true);
@@ -7949,11 +7978,11 @@ window.LAB_PROGRESS_CONFIG = {
     const submit = document.getElementById("progress-login-submit");
     const email = input.value.trim().toLowerCase();
     submit.disabled = true;
-    setAuthMessage("Sending your secure sign-in link…", false);
+    setAuthMessage("Sending your one-time login code…", false);
 
     const result = await state.client.auth.signInWithOtp({
       email: email,
-      options: { emailRedirectTo: window.location.href.split("#")[0] }
+      options: { shouldCreateUser: true }
     });
 
     submit.disabled = false;
@@ -7961,7 +7990,60 @@ window.LAB_PROGRESS_CONFIG = {
       setAuthMessage(result.error.message, true);
       return;
     }
-    setAuthMessage("Check your email for the sign-in link. Only rostered addresses receive access to Lab 1 progress.", false);
+    state.pendingEmail = email;
+    document.getElementById("progress-otp-email").textContent = email;
+    document.getElementById("progress-login-form").hidden = true;
+    document.getElementById("progress-otp-form").hidden = false;
+    document.getElementById("progress-otp-code").value = "";
+    document.getElementById("progress-otp-code").focus();
+    setAuthMessage("Enter the six-digit code from the newest email. The code expires after the period configured in Supabase.", false);
+  }
+
+  async function verifyLoginCode(event) {
+    event.preventDefault();
+    if (!state.client || !state.pendingEmail) {
+      resetOtpLogin();
+      setAuthMessage("Enter your roster email address and request a new login code.", true);
+      return;
+    }
+
+    const input = document.getElementById("progress-otp-code");
+    const submit = document.getElementById("progress-otp-submit");
+    const token = input.value.replace(/\s+/g, "");
+
+    if (!/^\d{6}$/.test(token)) {
+      setAuthMessage("Enter the complete six-digit code from your email.", true);
+      input.focus();
+      return;
+    }
+
+    submit.disabled = true;
+    setAuthMessage("Verifying your login code…", false);
+
+    const result = await state.client.auth.verifyOtp({
+      email: state.pendingEmail,
+      token: token,
+      type: "email"
+    });
+
+    submit.disabled = false;
+    if (result.error || !result.data.session) {
+      setAuthMessage(result.error ? result.error.message : "The login code could not be verified.", true);
+      input.select();
+      return;
+    }
+
+    setAuthMessage("Login successful. Loading your progress…", false);
+    await handleSession(result.data.session);
+  }
+
+  function resetOtpLogin() {
+    state.pendingEmail = "";
+    document.getElementById("progress-login-form").hidden = false;
+    document.getElementById("progress-otp-form").hidden = true;
+    document.getElementById("progress-otp-code").value = "";
+    document.getElementById("progress-login-email").focus();
+    setAuthMessage("", false);
   }
 
   async function handleSession(session) {
@@ -8120,6 +8202,7 @@ window.LAB_PROGRESS_CONFIG = {
 
   async function signOut() {
     if (state.client) await state.client.auth.signOut();
+    resetOtpLogin();
     const portal = document.getElementById("progress-portal");
     if (portal.open) portal.close();
   }
