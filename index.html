@@ -878,6 +878,12 @@ button {
   box-shadow: 0 12px 30px rgba(35, 83, 156, .08);
 }
 
+/* Keep the summary out of the public/default view. JavaScript removes
+   the hidden attribute only after a student account is authenticated. */
+.weekly-progress-summary[hidden] {
+  display: none !important;
+}
+
 .weekly-progress-summary h3 {
   margin: 0 0 5px;
   color: #173844;
@@ -1424,7 +1430,7 @@ html[data-theme="dark"] footer { border-top-color: #2b3955; }
     </a>
   </div>
 </div>
-<section class="weekly-progress-summary" id="weekly-progress-summary" aria-live="polite">
+<section class="weekly-progress-summary" id="weekly-progress-summary" aria-live="polite" hidden>
   <div>
     <h3>Weekly learning progress</h3>
     <p id="weekly-progress-message">Sign in with your roster email to record slides and homework completion.</p>
@@ -1527,23 +1533,30 @@ html[data-theme="dark"] footer { border-top-color: #2b3955; }
     <article class="form-card reveal">
       <span class="form-card-number">01</span>
       <h3>Queries</h3>
-      <p>Submit a course or lab question, request clarification, or report an issue with the provided material.</p>
+      <p>Submit a course or lab question, request clarification, report an issue with the provided material, query related to marks/result or any other.</p>
       <!-- Replace only the placeholder URL below with the Queries Google Form link. -->
-      <a class="button primary" href="https://forms.gle/REPLACE-WITH-QUERIES-FORM" target="_blank" rel="noreferrer">Open form ↗</a>
+      <a class="button primary" href="https://forms.gle/csh4xA3ahdgoHTNJ8" target="_blank" rel="noreferrer">Open form ↗</a>
     </article>
     <article class="form-card reveal">
       <span class="form-card-number">02</span>
       <h3>Group Formation</h3>
       <p>Provide proposed group members for labs or the CEP. Final approval remains subject to the stated group-size limits.</p>
       <!-- Replace only the placeholder URL below with the Group Formation Google Form link. -->
-      <a class="button primary" href="https://forms.gle/REPLACE-WITH-GROUP-FORMATION-FORM" target="_blank" rel="noreferrer">Open form ↗</a>
+      <a class="button primary" href="https://forms.gle/KkgZWRzsvCG6MCsZ9" target="_blank" rel="noreferrer">Open form ↗</a>
     </article>
     <article class="form-card reveal">
       <span class="form-card-number">03</span>
       <h3>Course Feedback</h3>
       <p>Share constructive feedback about lectures, labs, resources, pace, and areas where additional support would help.</p>
       <!-- Replace only the placeholder URL below with the Course Feedback Google Form link. -->
-      <a class="button primary" href="https://forms.gle/REPLACE-WITH-COURSE-FEEDBACK-FORM" target="_blank" rel="noreferrer">Open form ↗</a>
+      <a class="button primary" href="https://forms.gle/9eCWUba1Vhg3yQtP8" target="_blank" rel="noreferrer">Open form ↗</a>
+    </article>
+     <article class="form-card reveal">
+      <span class="form-card-number">04</span>
+      <h3>Login Registration</h3>
+      <p></p>
+      <!-- Replace only the placeholder URL below with the Course Feedback Google Form link. -->
+      <a class="button primary" href="https://forms.gle/8w3wwzkY99fW67ZU9" target="_blank" rel="noreferrer">Open form ↗</a>
     </article>
   </div>
 </section>
@@ -2119,6 +2132,10 @@ window.COURSE_PROGRESS_CONFIG = {
     const total = state.tasks.length;
     const percent = total ? Math.round((completed / total) * 100) : 0;
     const accountButton = document.getElementById("course-progress-account-button");
+    const weeklyProgressSummary = document.getElementById("weekly-progress-summary");
+
+    // The personal progress bar belongs only to a signed-in student view.
+    weeklyProgressSummary.hidden = !isStudent;
 
     document.getElementById("weekly-progress-percent").textContent = percent + "%";
     document.getElementById("weekly-progress-count").textContent = completed + " of " + total + " activities";

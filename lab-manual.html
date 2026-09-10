@@ -679,13 +679,15 @@
   }
 
   /* ================================================================
-     LAB 1 PROGRESS PORTAL
+     MULTI-LAB PROGRESS PORTAL
      The portal styles are kept together so they are easy to modify.
      ================================================================ */
   .progress-account-button,
   .progress-primary-button,
   .progress-secondary-button,
   .task-completion-button,
+  .objective-completion-button,
+  .objective-progress-open-button,
   .progress-icon-button {
     border: 0;
     font: inherit;
@@ -717,6 +719,9 @@
     border-radius: 18px;
     background: #fff;
     box-shadow: 0 14px 34px rgba(35,83,156,.09);
+  }
+  .progress-summary-card[hidden] {
+    display: none !important;
   }
   .progress-summary-card h3 {
     margin: 0 0 5px;
@@ -762,7 +767,8 @@
   }
 
   .task-progress-cell { min-width: 156px; }
-  .task-completion-button {
+  .task-completion-button,
+  .objective-completion-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -775,17 +781,74 @@
     color: #2457bd;
   }
   .task-completion-button:hover:not(:disabled),
-  .task-completion-button:focus-visible:not(:disabled) { background: #e0ecff; }
-  .task-completion-button[aria-pressed="true"] {
+  .task-completion-button:focus-visible:not(:disabled),
+  .objective-completion-button:hover:not(:disabled),
+  .objective-completion-button:focus-visible:not(:disabled) { background: #e0ecff; }
+  .task-completion-button[aria-pressed="true"],
+  .objective-completion-button[aria-pressed="true"] {
     border-color: rgba(24,138,90,.30);
     background: #e5f7ef;
     color: #147048;
   }
-  .task-completion-button:disabled {
+  .task-completion-button:disabled,
+  .objective-completion-button:disabled {
     opacity: .56;
     cursor: not-allowed;
   }
   #lab-1-procedure tr.task-complete td { background: rgba(230,248,240,.58); }
+  .objective-progress-launch-row {
+    display: flex;
+    justify-content: flex-end;
+    margin: 12px 0 18px;
+  }
+  .objective-progress-open-button {
+    min-width: 132px;
+    min-height: 44px;
+    padding: 10px 18px;
+    border-radius: 12px;
+    background: linear-gradient(180deg,#3b73eb,#2f61ce);
+    color: #fff;
+    box-shadow: 0 9px 20px rgba(47,102,220,.22);
+  }
+  .objective-progress-open-button:hover,
+  .objective-progress-open-button:focus-visible {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+  .objective-progress-open-button.is-complete {
+    background: linear-gradient(180deg,#28ad79,#168a5a);
+  }
+  .objective-progress-card { max-width: none; }
+  .objective-progress-status {
+    margin-top: 0;
+  }
+  .objective-progress-list {
+    display: grid;
+    gap: 10px;
+    margin: 18px 0;
+  }
+  .objective-progress-option {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto;
+    gap: 16px;
+    align-items: center;
+    padding: 13px 14px;
+    border: 1px solid rgba(47,102,220,.14);
+    border-radius: 12px;
+    background: #f8fbff;
+  }
+  .objective-progress-option.is-complete {
+    border-color: rgba(24,138,90,.26);
+    background: #eaf8f1;
+  }
+  .objective-progress-option-text {
+    text-align: justify;
+    text-justify: inter-word;
+  }
+  .objective-completion-button {
+    width: auto;
+    min-width: 150px;
+  }
 
   .progress-dialog {
     width: min(1080px, calc(100vw - 30px));
@@ -937,7 +1000,7 @@
   .dashboard-metric strong { display: block; margin-top: 3px; color: #2457bd; font-size: 1.45rem; }
   .dashboard-toolbar {
     display: grid;
-    grid-template-columns: minmax(220px,1fr) 190px auto;
+    grid-template-columns: 170px minmax(220px,1fr) 190px auto;
     gap: 10px;
     align-items: end;
     margin-bottom: 14px;
@@ -1064,6 +1127,8 @@
     .dashboard-toolbar { grid-template-columns: 1fr; }
     .dashboard-toolbar > :last-child { grid-column: auto; }
     .progress-portal-panel { padding: 18px; }
+    .objective-progress-option { grid-template-columns: 1fr; }
+    .objective-completion-button { width: 100%; }
   }
 
   @media (max-width: 900px) {
@@ -1263,15 +1328,25 @@
     color: #f5f7fb;
   }
   html[data-theme="dark"] .progress-secondary-button,
-  html[data-theme="dark"] .task-completion-button {
+  html[data-theme="dark"] .task-completion-button,
+  html[data-theme="dark"] .objective-completion-button {
     border-color: #40557b;
     background: #172844;
     color: #9db8ff;
   }
-  html[data-theme="dark"] .task-completion-button[aria-pressed="true"] {
+  html[data-theme="dark"] .task-completion-button[aria-pressed="true"],
+  html[data-theme="dark"] .objective-completion-button[aria-pressed="true"] {
     border-color: #2e745e;
     background: #14392f;
     color: #9be5c9;
+  }
+  html[data-theme="dark"] .objective-progress-option {
+    border-color: #344663;
+    background: #0f1a2d;
+  }
+  html[data-theme="dark"] .objective-progress-option.is-complete {
+    border-color: #2e745e;
+    background: #14392f;
   }
   html[data-theme="dark"] .progress-track { background: #26344c; }
   html[data-theme="dark"] .progress-message { background: #172844; color: #bfd0e5; }
@@ -1285,6 +1360,15 @@
   }
   html[data-theme="dark"] .weekly-week-chip strong { color: #b9c8dc; }
   html[data-theme="dark"] .simple-footer { border-top-color: #2b3955; color: #b8c4d4; }
+
+  /* Justified text for Lab 04 */
+#lab-4 p,
+#lab-4 li,
+#lab-4 .manual-table td:nth-child(3) {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+}
 </style>
 </head>
 <body>
@@ -1394,6 +1478,7 @@
             <li>Document any warning, violation, workaround, or ECO and explain its effect on the design.</li>
             <li>Use meaningful file names and comments so another student can understand and reproduce the flow.</li>
             <li>Ask the instructor before changing technology data, library settings, supplied RTL, or the defined experiment scope.</li>
+            <li>After each task, login to the website and mark it complete.</li>
           </ul>
         </section>
       </article>
@@ -2039,9 +2124,302 @@ In VLSI design, manually checking DRC is impractical due to the vast number of w
           </ol>
         </section>
       </article>
+
+      <!-- LAB 4 -->
+<!-- =========================================================
+     LAB 04: RTL-TO-GDSII PROJECT
+     The sidebar entry and topic numbering are generated
+     automatically from this structure.
+     ========================================================= -->
+<article
+  class="lab-content"
+  id="lab-4"
+  data-lab-content="4"
+  hidden
+>
+
+  <!-- Lab title -->
+  <div class="lab-header-card">
+    <span class="lab-index">CEP</span>
+    <h2>RTL-to-GDSII Implementation and Optimization of A Digital System</h2>
+  </div>
+
+  <!-- Problem Statement -->
+  <section
+    class="manual-section-card"
+    id="lab-4-problem-statement"
+  >
+    <h3>Problem Statement</h3>
+
+    <p>
+      In this project, students will implement a selected digital system (assigned by the instructor)
+      through a complete RTL-to-GDSII design flow using an appropriate
+      standard-cell technology library and electronic design automation
+      tools. The selected system may be a processor component, controller,
+      datapath, accelerator, communication block, or another synthesizable
+      digital design.
+    </p>
+
+    <p>
+      Students must verify the functional correctness of the RTL design,
+      synthesize it into a gate-level netlist, perform physical
+      implementation, and evaluate the final routed design. The physical
+      implementation flow should include floorplanning, power planning,
+      placement, clock-tree synthesis, routing, post-route optimization,
+      timing analysis, and relevant physical-verification checks.
+    </p>
+
+    <p>
+      A valid baseline implementation must first be established. Students
+      will then optimize the design with respect to one or two selected
+      metrics from <strong>performance</strong>, <strong>power</strong>,
+      and <strong>area</strong>. Optimization of the selected metrics must
+      not compromise functional correctness or violate the specified timing
+      and physical-design requirements.
+    </p>
+
+    <p>
+      Students must compare the baseline and optimized implementations using
+      measurable results and explain the trade-offs introduced by their
+      design and optimization decisions.
+    </p>
+  </section>
+
+  <!-- Objectives -->
+  <section
+    class="manual-section-card"
+    id="lab-4-objectives"
+  >
+    <h3>Objectives</h3>
+
+    <p>Upon completing this project, students should be able to:</p>
+
+    <ol class="concept-list">
+      <li>
+        Apply a complete RTL-to-GDSII flow to a synthesizable digital system.
+      </li>
+
+      <li>
+        Verify the functional correctness of the RTL design using an
+        appropriate testbench and simulation environment.
+      </li>
+
+      <li>
+        Develop and apply suitable clock, timing, operating-condition, and
+        input/output constraints.
+      </li>
+
+      <li>
+        Perform logic synthesis and analyze the resulting gate-level
+        netlist.
+      </li>
+
+      <li>
+        Analyze synthesis reports related to timing, power, area, and design
+        correctness.
+      </li>
+
+      <li>
+        Perform floorplanning, power planning, placement, clock-tree
+        synthesis, routing, and post-route optimization.
+      </li>
+
+      <li>
+        Identify timing, congestion, routing, connectivity, and other
+        physical-design problems using relevant tool reports.
+      </li>
+
+      <li>
+        Optimize the implementation for one or two selected metrics from
+        performance, power, and area.
+      </li>
+
+      <li>
+        Compare the baseline and optimized implementations using measurable
+        results.
+      </li>
+
+      <li>
+        Evaluate and explain the trade-offs between performance, power, and
+        area.
+      </li>
+
+      <li>
+        Generate the final layout and verify that it satisfies the required
+        functional, timing, and physical-design conditions.
+      </li>
+    </ol>
+  </section>
+
+  <!-- Expected Deliverables -->
+  <section
+    class="manual-section-card"
+    id="lab-4-expected-deliverables"
+  >
+    <h3>Expected Deliverables</h3>
+
+    <p>
+      The project should produce the following design files, reports, and
+      analysis results. Exact filenames may vary according to the selected
+      digital system and design flow.
+    </p>
+
+    <div class="table-wrap">
+      <table
+        class="manual-table"
+        aria-label="Expected deliverables for Lab 4"
+      >
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Deliverable</th>
+            <th>Expected Content</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td><span class="stage-number">1</span></td>
+            <td><strong>RTL Design</strong></td>
+            <td>
+              Complete, synthesizable, and properly organized HDL source
+              files for the selected digital system.
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="stage-number">2</span></td>
+            <td><strong>Functional Verification</strong></td>
+            <td>
+              Testbench files, simulation scripts, logs, and results
+              demonstrating correct RTL behavior.
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="stage-number">3</span></td>
+            <td><strong>Design Constraints</strong></td>
+            <td>
+              Clock, input/output timing, operating-condition, and other
+              relevant constraints used during synthesis and physical
+              implementation.
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="stage-number">4</span></td>
+            <td><strong>Synthesis Outputs</strong></td>
+            <td>
+              Synthesized gate-level netlist and relevant timing, power,
+              area, and design-check reports.
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="stage-number">5</span></td>
+            <td><strong>Physical Implementation</strong></td>
+            <td>
+              Completed floorplan, power distribution network, placed
+              design, clock tree, and routed layout.
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="stage-number">6</span></td>
+            <td><strong>Implementation Reports</strong></td>
+            <td>
+              Relevant utilization, congestion, timing, clock-tree, power,
+              routing, and physical-verification reports.
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="stage-number">7</span></td>
+            <td><strong>Baseline Results</strong></td>
+            <td>
+              Performance, power, and area results obtained from the first
+              valid implementation.
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="stage-number">8</span></td>
+            <td><strong>Optimized Results</strong></td>
+            <td>
+              Results obtained after optimizing one or two selected metrics
+              while preserving correctness and required design constraints.
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="stage-number">9</span></td>
+            <td><strong>Comparative Analysis</strong></td>
+            <td>
+              A quantitative comparison of the baseline and optimized
+              implementations, including percentage improvement or
+              degradation where applicable.
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="stage-number">10</span></td>
+            <td><strong>Trade-off Analysis</strong></td>
+            <td>
+              An explanation of how optimization of the selected metrics
+              affected the remaining performance, power, and area results.
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="stage-number">11</span></td>
+            <td><strong>Final Design Outputs</strong></td>
+            <td>
+              Final GDSII layout, post-route netlist, timing information,
+              parasitic-extraction data, and other outputs supported by the
+              selected design flow.
+            </td>
+          </tr>
+
+          <tr>
+            <td><span class="stage-number">12</span></td>
+            <td><strong>Project Report and Demonstration</strong></td>
+            <td>
+              A concise technical report and demonstration describing the
+              design, methodology, constraints, optimization decisions,
+              results, encountered problems, and final verification status.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</article>
+
     </div>
   </section>
 </main>
+
+<!-- OBJECTIVE PROGRESS ENTRY
+     One Progress button in each populated Objectives section opens this dialog. -->
+<dialog class="progress-dialog" id="objective-progress-dialog" aria-labelledby="objective-progress-title">
+  <div class="progress-dialog-shell">
+    <header class="progress-dialog-header">
+      <h2 id="objective-progress-title">Objectives progress</h2>
+      <button class="progress-icon-button" id="objective-progress-close" type="button" aria-label="Close objectives progress window">×</button>
+    </header>
+    <section class="progress-portal-panel">
+      <div class="progress-auth-card objective-progress-card">
+        <p class="objective-progress-status" id="objective-progress-status">Sign in with your roster email to update objective progress.</p>
+        <div class="objective-progress-list" id="objective-progress-list" aria-label="Objective completion choices"></div>
+        <div class="progress-button-row">
+          <button class="progress-primary-button" id="objective-progress-login-button" type="button">Sign in to update</button>
+          <button class="progress-secondary-button" id="objective-progress-done" type="button">Done</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</dialog>
 
 <!--
   ROSTER-ACTIVATION PROGRESS PORTAL
@@ -2051,7 +2429,7 @@ In VLSI design, manually checking DRC is impractical due to the vast number of w
 <dialog class="progress-dialog" id="progress-portal" aria-labelledby="progress-portal-title">
   <div class="progress-dialog-shell">
     <header class="progress-dialog-header">
-      <h2 id="progress-portal-title">Lab 1 progress portal</h2>
+      <h2 id="progress-portal-title">Lab progress portal</h2>
       <button class="progress-icon-button" id="progress-portal-close" type="button" aria-label="Close progress portal">×</button>
     </header>
 
@@ -2088,14 +2466,14 @@ In VLSI design, manually checking DRC is impractical due to the vast number of w
           <span id="progress-student-details"></span>
         </div>
         <div class="progress-button-row">
-          <button class="progress-primary-button" id="progress-go-to-tasks" type="button">Open Lab 1 tasks</button>
+          <button class="progress-primary-button" id="progress-go-to-tasks" type="button">Open lab progress</button>
           <button class="progress-secondary-button" data-progress-sign-out type="button">Sign out</button>
         </div>
       </div>
       <div class="progress-auth-card">
         <h3>Your completion record</h3>
-        <p id="progress-student-summary">No tasks have been marked complete yet.</p>
-        <p>Each of the seven tasks has equal weight. You may click a completed task again to correct your record.</p>
+        <p id="progress-student-summary">No lab activities have been marked complete yet.</p>
+        <p>Every tracked activity has equal weight within its lab. Click a completed activity again if you need to correct your record.</p>
       </div>
     </section>
 
@@ -2103,7 +2481,7 @@ In VLSI design, manually checking DRC is impractical due to the vast number of w
       <div class="progress-user-banner">
         <div>
           <strong id="progress-instructor-name">Instructor dashboard</strong>
-          <span>Read-only Lab 1 and weekly learning progress · equal activity weighting</span>
+          <span>Read-only lab and weekly learning progress · equal activity weighting</span>
         </div>
         <div class="progress-button-row">
           <button class="progress-secondary-button" id="progress-dashboard-refresh" type="button">Refresh</button>
@@ -2113,13 +2491,17 @@ In VLSI design, manually checking DRC is impractical due to the vast number of w
 
       <div class="dashboard-metrics" aria-label="Class progress summary">
         <div class="dashboard-metric"><span>Rostered students</span><strong id="dashboard-student-count">0</strong></div>
-        <div class="dashboard-metric"><span>Lab 1 class average</span><strong id="dashboard-class-average">0%</strong></div>
-        <div class="dashboard-metric"><span>Completed Lab 1</span><strong id="dashboard-complete-count">0</strong></div>
+        <div class="dashboard-metric"><span id="dashboard-class-average-label">Selected lab average</span><strong id="dashboard-class-average">0%</strong></div>
+        <div class="dashboard-metric"><span id="dashboard-complete-count-label">Completed selected lab</span><strong id="dashboard-complete-count">0</strong></div>
         <div class="dashboard-metric"><span>Weekly class average</span><strong id="dashboard-weekly-average">0%</strong></div>
       </div>
 
-      <h3>Lab 1 progress</h3>
+      <h3 id="dashboard-lab-title">Lab progress</h3>
       <div class="dashboard-toolbar">
+        <label class="progress-field">
+          Lab
+          <select id="dashboard-lab-select" aria-label="Select lab progress"></select>
+        </label>
         <label class="progress-field">
           Search roster
           <input class="progress-search" id="dashboard-search" type="search" placeholder="Roll number, name, or email"/>
@@ -2143,7 +2525,7 @@ In VLSI design, manually checking DRC is impractical due to the vast number of w
               <th>Roll number</th>
               <th>Student</th>
               <th>Account</th>
-              <th>Tasks</th>
+              <th>Activities</th>
               <th>Progress</th>
               <th>Last update</th>
             </tr>
@@ -2323,15 +2705,15 @@ document.addEventListener('DOMContentLoaded', function () {
       /* Numeric lab panels are labelled automatically by their page order. */
       if (/^\d+$/.test(key)) {
         numberedLab += 1;
-        if (panelIndex) {
-          panelIndex.textContent = 'LAB ' + String(numberedLab).padStart(2, '0');
+        if (panelIndex && !panelIndex.hasAttribute('data-custom-label')) {
+          panelIndex.textContent = key === '4' ? 'CEP' : 'LAB ' + String(numberedLab).padStart(2, '0');
         }
       }
 
       if (panelIndex && panelIndex.textContent.trim()) {
         const label = document.createElement('span');
         label.className = 'nav-label';
-        label.textContent = panelIndex.textContent.trim();
+        label.textContent = key === '4' ? 'CEP' : panelIndex.textContent.trim();
         button.appendChild(label);
       }
 
@@ -8079,7 +8461,7 @@ document.addEventListener('DOMContentLoaded', function () {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ==================================================================
-   LAB 1 PROGRESS CONFIGURATION
+   MULTI-LAB PROGRESS CONFIGURATION
    After running lab-progress-supabase-setup.sql, replace only the two
    placeholder values below. The anon key is designed to be public; never
    place a Supabase service-role key in this HTML file.
@@ -8087,14 +8469,59 @@ document.addEventListener('DOMContentLoaded', function () {
 window.LAB_PROGRESS_CONFIG = {
   supabaseUrl: "https://zptjphbwrgorlqnyzxge.supabase.co",
   supabaseAnonKey: "sb_publishable_L4D_GS5P-DqQJVtLI684GA_DvfITLnj",
-  labId: "lab-1"
+  defaultLabId: "lab-1"
 };
 
 (function () {
   "use strict";
 
-  const TASK_ID_PREFIX = "lab1-task-";
-  const TASK_COUNT = 7;
+  /*
+    To enable progress for another lab, add one definition here. The selector
+    must match only real progress items. Placeholder objectives are excluded.
+  */
+  const LAB_DEFINITIONS = [
+    {
+      labId: "lab-1",
+      labKey: "1",
+      label: "Lab 1",
+      itemLabel: "tasks",
+      itemSingular: "task",
+      taskPrefix: "lab1-task-",
+      selector: "#lab-1-procedure table tbody tr",
+      itemType: "table-row"
+    },
+    {
+      labId: "lab-2",
+      labKey: "2",
+      label: "Lab 2",
+      itemLabel: "objectives",
+      itemSingular: "objective",
+      taskPrefix: "lab2-objective-",
+      selector: "#lab-2-objectives li:not(.placeholder-copy)",
+      itemType: "objective"
+    },
+    {
+      labId: "lab-3",
+      labKey: "3",
+      label: "Lab 3",
+      itemLabel: "objectives",
+      itemSingular: "objective",
+      taskPrefix: "lab3-objective-",
+      selector: "#lab-3-objectives li:not(.placeholder-copy)",
+      itemType: "objective"
+    },
+    {
+      labId: "lab-4",
+      labKey: "4",
+      label: "Lab 4",
+      itemLabel: "objectives",
+      itemSingular: "objective",
+      taskPrefix: "lab4-objective-",
+      selector: "#lab-4-objectives ol > li",
+      itemType: "objective",
+      hideSummaryUntilStudent: true
+    }
+  ];
   const WEEKLY_GROUP_ID = "course-weekly";
   const config = window.LAB_PROGRESS_CONFIG;
   const state = {
@@ -8102,11 +8529,15 @@ window.LAB_PROGRESS_CONFIG = {
     session: null,
     profile: null,
     progress: new Map(),
+    trackedLabs: [],
     dashboardRows: [],
+    dashboardRowsByLab: new Map(),
+    dashboardLabId: "",
     dashboardLoaded: false,
     weeklyDashboardRows: [],
     weeklyDashboardLoaded: false,
     weeklyTasks: [],
+    activeObjectiveLabId: "",
     pendingEmail: "",
     authNotice: "",
     authNoticeIsError: false
@@ -8115,12 +8546,12 @@ window.LAB_PROGRESS_CONFIG = {
   document.addEventListener("DOMContentLoaded", initializeProgressPortal);
 
   function initializeProgressPortal() {
-    enhanceLabTaskTable();
+    discoverLabProgressItems();
     bindPortalControls();
     renderStudentProgress();
 
     if (!isConfigured()) {
-      state.authNotice = "Instructor setup is required before accounts can be activated. Add the Supabase project URL and anon key in the LAB 1 PROGRESS CONFIGURATION block near the end of this file.";
+      state.authNotice = "Instructor setup is required before accounts can be activated. Add the Supabase project URL and anon key in the MULTI-LAB PROGRESS CONFIGURATION block near the end of this file.";
       state.authNoticeIsError = true;
       renderPortal();
       return;
@@ -8171,41 +8602,197 @@ window.LAB_PROGRESS_CONFIG = {
     );
   }
 
-  function enhanceLabTaskTable() {
-    const table = document.querySelector("#lab-1-procedure table");
-    if (!table || !table.tHead || !table.tBodies.length) return;
+  function discoverLabProgressItems() {
+    state.trackedLabs = [];
 
-    const headingRow = table.tHead.rows[0];
-    if (!headingRow.querySelector(".task-progress-heading")) {
-      const heading = document.createElement("th");
-      heading.className = "task-progress-heading";
-      heading.scope = "col";
-      heading.textContent = "Completed";
-      headingRow.appendChild(heading);
+    LAB_DEFINITIONS.forEach(function (definition) {
+      const nodes = Array.from(document.querySelectorAll(definition.selector));
+      if (!nodes.length) return;
+
+      definition.items = [];
+      ensureLabProgressSummary(definition, nodes.length);
+
+      if (definition.itemType === "table-row") {
+        const table = nodes[0].closest("table");
+        const headingRow = table && table.tHead ? table.tHead.rows[0] : null;
+        if (headingRow && !headingRow.querySelector(".task-progress-heading")) {
+          const heading = document.createElement("th");
+          heading.className = "task-progress-heading";
+          heading.scope = "col";
+          heading.textContent = "Completed";
+          headingRow.appendChild(heading);
+        }
+      }
+
+      nodes.forEach(function (node, index) {
+        const taskId = definition.taskPrefix + (index + 1);
+        const title = node.textContent.replace(/\s+/g, " ").trim();
+        let button = null;
+
+        node.dataset.taskId = taskId;
+
+        if (definition.itemType === "table-row") {
+          const cell = document.createElement("td");
+          button = document.createElement("button");
+          cell.className = "task-progress-cell";
+          button.className = "task-completion-button";
+          button.type = "button";
+          button.dataset.taskId = taskId;
+          button.dataset.labId = definition.labId;
+          button.setAttribute("aria-pressed", "false");
+          button.disabled = true;
+          button.textContent = "Sign in";
+          button.addEventListener("click", toggleTaskCompletion);
+          cell.appendChild(button);
+          node.appendChild(cell);
+        }
+
+        definition.items.push({
+          taskId: taskId,
+          title: title,
+          node: node,
+          button: button
+        });
+      });
+
+      if (definition.itemType === "objective") {
+        ensureObjectiveProgressLauncher(definition);
+      }
+
+      state.trackedLabs.push(definition);
+    });
+
+    populateDashboardLabSelector();
+  }
+
+  function ensureLabProgressSummary(definition, itemCount) {
+    let summary = document.getElementById(definition.labId + "-progress-summary");
+    if (!summary) {
+      const panel = document.getElementById(definition.labId);
+      const header = panel ? panel.querySelector(":scope > .lab-header-card") : null;
+      if (!panel || !header) return;
+
+      summary = document.createElement("section");
+      summary.className = "progress-summary-card";
+      summary.id = definition.labId + "-progress-summary";
+      summary.setAttribute("aria-live", "polite");
+      summary.innerHTML =
+        '<div><h3 id="' + definition.labId + '-progress-title">' + definition.label +
+        ' progress</h3><p id="' + definition.labId +
+        '-progress-message">Sign in with your roster email to record progress.</p></div>' +
+        '<div class="progress-summary-value"><strong id="' + definition.labId +
+        '-progress-percent">0%</strong><span id="' + definition.labId +
+        '-progress-count">0 of ' + itemCount + ' ' + definition.itemLabel + '</span></div>' +
+        '<div class="progress-track" aria-hidden="true"><span id="' + definition.labId +
+        '-progress-bar"></span></div>';
+      header.insertAdjacentElement("afterend", summary);
     }
 
-    Array.from(table.tBodies[0].rows).slice(0, TASK_COUNT).forEach(function (row, index) {
-      const taskId = TASK_ID_PREFIX + (index + 1);
-      row.dataset.taskId = taskId;
-      if (row.querySelector(".task-progress-cell")) return;
+    summary.hidden = Boolean(definition.hideSummaryUntilStudent);
+  }
 
-      const cell = document.createElement("td");
-      const button = document.createElement("button");
-      cell.className = "task-progress-cell";
-      button.className = "task-completion-button";
+  function ensureObjectiveProgressLauncher(definition) {
+    const section = document.getElementById(definition.labId + "-objectives");
+    if (!section) return;
+
+    const heading = section.querySelector(":scope > h3");
+    let row = section.querySelector(":scope > .objective-progress-launch-row");
+    let button = row ? row.querySelector(".objective-progress-open-button") : null;
+    if (!button) {
+      row = document.createElement("div");
+      button = document.createElement("button");
+      row.className = "objective-progress-launch-row";
+      button.className = "objective-progress-open-button";
       button.type = "button";
-      button.dataset.taskId = taskId;
-      button.setAttribute("aria-pressed", "false");
-      button.disabled = true;
-      button.textContent = "Sign in";
+      button.dataset.labId = definition.labId;
+      button.textContent = "Progress";
+      button.setAttribute("aria-label", "Update " + definition.label + " objective progress");
+      button.addEventListener("click", openObjectiveProgressDialog);
+      row.appendChild(button);
+    }
+
+    if (heading && row) heading.insertAdjacentElement("afterend", row);
+    definition.launchButton = button;
+  }
+
+  function populateDashboardLabSelector() {
+    const select = document.getElementById("dashboard-lab-select");
+    if (!select) return;
+    select.replaceChildren();
+    state.trackedLabs.forEach(function (definition) {
+      const option = document.createElement("option");
+      option.value = definition.labId;
+      option.textContent = definition.label;
+      select.appendChild(option);
+    });
+    state.dashboardLabId = state.trackedLabs.some(function (definition) {
+      return definition.labId === config.defaultLabId;
+    }) ? config.defaultLabId : (state.trackedLabs[0] ? state.trackedLabs[0].labId : "");
+    select.value = state.dashboardLabId;
+  }
+
+  function openObjectiveProgressDialog(event) {
+    const dialog = document.getElementById("objective-progress-dialog");
+    state.activeObjectiveLabId = event.currentTarget.dataset.labId;
+    renderObjectiveProgressDialog();
+    if (typeof dialog.showModal === "function") dialog.showModal();
+    else dialog.setAttribute("open", "");
+  }
+
+  function renderObjectiveProgressDialog() {
+    const definition = state.trackedLabs.find(function (entry) {
+      return entry.labId === state.activeObjectiveLabId && entry.itemType === "objective";
+    });
+    if (!definition) return;
+
+    const isStudent = Boolean(state.profile && state.profile.role === "student");
+    const isInstructor = Boolean(state.profile && state.profile.role === "instructor");
+    const list = document.getElementById("objective-progress-list");
+    const status = document.getElementById("objective-progress-status");
+    const loginButton = document.getElementById("objective-progress-login-button");
+
+    document.getElementById("objective-progress-title").textContent =
+      definition.label + " objectives progress";
+    loginButton.hidden = isStudent || isInstructor;
+
+    if (isStudent) {
+      status.textContent = state.profile.full_name +
+        " · mark an objective after you have achieved it. Changes save immediately.";
+    } else if (isInstructor) {
+      status.textContent = "Instructor view is read-only. Use the instructor dashboard to review student progress.";
+    } else {
+      status.textContent = "Sign in with your roster email to update " + definition.label + " objective progress.";
+    }
+
+    list.replaceChildren();
+    definition.items.forEach(function (item, index) {
+      const row = document.createElement("div");
+      const text = document.createElement("span");
+      const button = document.createElement("button");
+      const completed = isStudent && Boolean(state.progress.get(item.taskId));
+
+      row.className = "objective-progress-option";
+      row.classList.toggle("is-complete", completed);
+      text.className = "objective-progress-option-text";
+      text.textContent = (index + 1) + ". " + item.title;
+      button.className = "objective-completion-button";
+      button.type = "button";
+      button.dataset.taskId = item.taskId;
+      button.dataset.labId = definition.labId;
+      button.disabled = !isStudent;
+      button.setAttribute("aria-pressed", String(completed));
+      button.textContent = completed
+        ? "✓ Completed"
+        : (isStudent ? "Mark complete" : (isInstructor ? "Student only" : "Sign in"));
       button.addEventListener("click", toggleTaskCompletion);
-      cell.appendChild(button);
-      row.appendChild(cell);
+      row.append(text, button);
+      list.appendChild(row);
     });
   }
 
   function bindPortalControls() {
     const portal = document.getElementById("progress-portal");
+    const objectiveDialog = document.getElementById("objective-progress-dialog");
     const accountButton = document.getElementById("progress-account-button");
     const closeButton = document.getElementById("progress-portal-close");
 
@@ -8221,14 +8808,33 @@ window.LAB_PROGRESS_CONFIG = {
       if (event.target === portal) portal.close();
     });
 
+    document.getElementById("objective-progress-close").addEventListener("click", function () {
+      objectiveDialog.close();
+    });
+    document.getElementById("objective-progress-done").addEventListener("click", function () {
+      objectiveDialog.close();
+    });
+    objectiveDialog.addEventListener("click", function (event) {
+      if (event.target === objectiveDialog) objectiveDialog.close();
+    });
+    document.getElementById("objective-progress-login-button").addEventListener("click", function () {
+      objectiveDialog.close();
+      accountButton.click();
+    });
+
     document.getElementById("progress-login-form").addEventListener("submit", sendLoginCode);
     document.getElementById("progress-otp-form").addEventListener("submit", verifyLoginCode);
     document.getElementById("progress-otp-restart").addEventListener("click", resetOtpLogin);
     document.querySelectorAll("[data-progress-sign-out]").forEach(function (button) {
       button.addEventListener("click", signOut);
     });
-    document.getElementById("progress-go-to-tasks").addEventListener("click", openLabTasks);
+    document.getElementById("progress-go-to-tasks").addEventListener("click", openNextLabActivity);
     document.getElementById("progress-dashboard-refresh").addEventListener("click", loadDashboard);
+    document.getElementById("dashboard-lab-select").addEventListener("change", function (event) {
+      state.dashboardLabId = event.target.value;
+      state.dashboardRows = state.dashboardRowsByLab.get(state.dashboardLabId) || [];
+      renderDashboardRows();
+    });
     document.getElementById("dashboard-search").addEventListener("input", renderDashboardRows);
     document.getElementById("dashboard-filter").addEventListener("change", renderDashboardRows);
     document.getElementById("dashboard-download-csv").addEventListener("click", downloadProgressCsv);
@@ -8323,6 +8929,7 @@ window.LAB_PROGRESS_CONFIG = {
     state.profile = null;
     state.progress.clear();
     state.dashboardLoaded = false;
+    state.dashboardRowsByLab.clear();
     state.weeklyDashboardLoaded = false;
 
     if (!session || !state.client) {
@@ -8362,8 +8969,12 @@ window.LAB_PROGRESS_CONFIG = {
     }
 
     state.progress.clear();
+    const trackedIds = new Set();
+    state.trackedLabs.forEach(function (definition) {
+      definition.items.forEach(function (item) { trackedIds.add(item.taskId); });
+    });
     result.data.forEach(function (record) {
-      if (record.task_id.startsWith(TASK_ID_PREFIX)) {
+      if (trackedIds.has(record.task_id)) {
         state.progress.set(record.task_id, Boolean(record.completed));
       }
     });
@@ -8388,62 +8999,95 @@ window.LAB_PROGRESS_CONFIG = {
     );
 
     if (result.error) {
-      showToast("The task could not be updated: " + result.error.message);
+      showToast("The activity could not be updated: " + result.error.message);
       renderStudentProgress();
       return;
     }
 
     state.progress.set(taskId, nextValue);
     renderStudentProgress();
-    showToast(nextValue ? "Task marked complete." : "Task returned to incomplete.");
+    showToast(nextValue ? "Activity marked complete." : "Activity returned to incomplete.");
   }
 
-  function completedTaskCount() {
-    let count = 0;
-    for (let index = 1; index <= TASK_COUNT; index += 1) {
-      if (state.progress.get(TASK_ID_PREFIX + index)) count += 1;
-    }
-    return count;
+  function completedCount(definition) {
+    return definition.items.filter(function (item) {
+      return Boolean(state.progress.get(item.taskId));
+    }).length;
   }
 
   function renderStudentProgress() {
     const isStudent = Boolean(state.profile && state.profile.role === "student");
     const isInstructor = Boolean(state.profile && state.profile.role === "instructor");
-    const count = isStudent ? completedTaskCount() : 0;
-    const percent = Math.round((count / TASK_COUNT) * 100);
-    const summary = document.getElementById("lab-1-progress-summary");
     const accountButton = document.getElementById("progress-account-button");
+    let totalActivities = 0;
+    let totalCompleted = 0;
 
-    document.getElementById("lab-1-progress-percent").textContent = percent + "%";
-    document.getElementById("lab-1-progress-count").textContent = count + " of " + TASK_COUNT + " tasks";
-    document.getElementById("lab-1-progress-bar").style.width = percent + "%";
-    summary.classList.toggle("is-complete", count === TASK_COUNT);
+    state.trackedLabs.forEach(function (definition) {
+      const total = definition.items.length;
+      const count = isStudent ? completedCount(definition) : 0;
+      const percent = total ? Math.round((count / total) * 100) : 0;
+      const summary = document.getElementById(definition.labId + "-progress-summary");
+      const message = document.getElementById(definition.labId + "-progress-message");
+
+      if (definition.hideSummaryUntilStudent) {
+        summary.hidden = !isStudent;
+      }
+
+      totalActivities += total;
+      totalCompleted += count;
+      document.getElementById(definition.labId + "-progress-percent").textContent = percent + "%";
+      document.getElementById(definition.labId + "-progress-count").textContent =
+        count + " of " + total + " " + definition.itemLabel;
+      document.getElementById(definition.labId + "-progress-bar").style.width = percent + "%";
+      summary.classList.toggle("is-complete", total > 0 && count === total);
+
+      if (isStudent) {
+        message.textContent = state.profile.full_name + " · " + state.profile.roll_number +
+          " · each " + definition.itemSingular + " carries equal weight.";
+      } else if (isInstructor) {
+        message.textContent = "Instructor view: completion controls are read-only. Open the dashboard to review the class.";
+      } else {
+        message.textContent = "Sign in with your roster email to mark completed " + definition.itemLabel + ".";
+      }
+
+      definition.items.forEach(function (item) {
+        const completed = isStudent && Boolean(state.progress.get(item.taskId));
+        if (item.button) {
+          item.button.disabled = !isStudent;
+          item.button.setAttribute("aria-pressed", String(completed));
+          item.button.textContent = completed
+            ? "✓ Completed"
+            : (isStudent ? "Mark complete" : (isInstructor ? "Student only" : "Sign in"));
+          item.node.classList.toggle("task-complete", completed);
+        }
+      });
+
+      if (definition.launchButton) {
+        definition.launchButton.classList.toggle("is-complete", isStudent && count === total);
+        definition.launchButton.title = isStudent
+          ? count + " of " + total + " objectives achieved"
+          : "Open objective progress";
+      }
+    });
+
+    const overallPercent = totalActivities
+      ? Math.round((totalCompleted / totalActivities) * 100)
+      : 0;
 
     if (isStudent) {
-      document.getElementById("lab-1-progress-message").textContent =
-        state.profile.full_name + " · " + state.profile.roll_number + " · each task carries equal weight.";
-      accountButton.textContent = state.profile.roll_number + " · " + percent + "%";
+      accountButton.textContent = state.profile.roll_number + " · " + overallPercent + "%";
       document.getElementById("progress-student-summary").textContent =
-        count === TASK_COUNT
-          ? "All seven Lab 1 tasks are marked complete."
-          : count + " of " + TASK_COUNT + " tasks are currently marked complete (" + percent + "%).";
+        totalCompleted === totalActivities && totalActivities > 0
+          ? "All currently available lab activities are marked complete."
+          : totalCompleted + " of " + totalActivities + " available lab activities are marked complete (" + overallPercent + "%).";
     } else if (isInstructor) {
-      document.getElementById("lab-1-progress-message").textContent =
-        "Instructor view: student completion controls are read-only here. Open the dashboard to review the class.";
       accountButton.textContent = "Instructor dashboard";
     } else {
-      document.getElementById("lab-1-progress-message").textContent =
-        "Sign in with your roster email to mark completed tasks.";
       accountButton.textContent = "Lab progress login";
     }
 
-    document.querySelectorAll(".task-completion-button").forEach(function (button) {
-      const completed = isStudent && Boolean(state.progress.get(button.dataset.taskId));
-      button.disabled = !isStudent;
-      button.setAttribute("aria-pressed", String(completed));
-      button.textContent = completed ? "✓ Completed" : (isStudent ? "Mark complete" : (isInstructor ? "Student only" : "Sign in"));
-      button.closest("tr").classList.toggle("task-complete", completed);
-    });
+    const objectiveDialog = document.getElementById("objective-progress-dialog");
+    if (objectiveDialog && objectiveDialog.open) renderObjectiveProgressDialog();
   }
 
   function renderPortal() {
@@ -8478,43 +9122,69 @@ window.LAB_PROGRESS_CONFIG = {
     resetOtpLogin();
     const portal = document.getElementById("progress-portal");
     if (portal.open) portal.close();
+    const objectiveDialog = document.getElementById("objective-progress-dialog");
+    if (objectiveDialog.open) objectiveDialog.close();
   }
 
-  function openLabTasks() {
-    const labButton = document.querySelector('.lab-nav-button[data-lab="1"]');
+  function openNextLabActivity() {
+    const targetDefinition = state.trackedLabs.find(function (definition) {
+      return definition.items.some(function (item) { return !state.progress.get(item.taskId); });
+    }) || state.trackedLabs[0];
+    if (!targetDefinition) return;
+
+    const labButton = document.querySelector('.lab-nav-button[data-lab="' + targetDefinition.labKey + '"]');
     if (labButton) labButton.click();
     document.getElementById("progress-portal").close();
     window.setTimeout(function () {
-      document.getElementById("lab-1-procedure").scrollIntoView({ behavior: "smooth", block: "start" });
+      const firstIncomplete = targetDefinition.items.find(function (item) {
+        return !state.progress.get(item.taskId);
+      });
+      const target = targetDefinition.itemType === "objective"
+        ? targetDefinition.launchButton
+        : (firstIncomplete
+            ? firstIncomplete.node
+            : document.getElementById(targetDefinition.labId + "-progress-summary"));
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
     }, 50);
   }
 
   async function loadDashboard() {
     if (!state.client || !state.profile || state.profile.role !== "instructor") return;
-    setDashboardMessage("Loading Lab 1 and weekly progress…", false);
+    setDashboardMessage("Loading lab progress…", false);
     setWeeklyDashboardMessage("Loading weekly progress…", false);
 
-    const results = await Promise.all([
-      state.client.rpc("instructor_lab_progress", { requested_lab_id: config.labId }),
+    const labRequests = state.trackedLabs.map(function (definition) {
+      return state.client.rpc("instructor_lab_progress", { requested_lab_id: definition.labId });
+    });
+    const results = await Promise.all(labRequests.concat([
       state.client.rpc("instructor_lab_progress", { requested_lab_id: WEEKLY_GROUP_ID }),
       state.client
         .from("lab_tasks")
         .select("task_id,task_order,title")
         .eq("lab_id", WEEKLY_GROUP_ID)
         .order("task_order")
-    ]);
-    const labResult = results[0];
-    const weeklyResult = results[1];
-    const taskResult = results[2];
+    ]));
+    const labResults = results.slice(0, state.trackedLabs.length);
+    const weeklyResult = results[state.trackedLabs.length];
+    const taskResult = results[state.trackedLabs.length + 1];
+    const failedLabResult = labResults.find(function (result) { return result.error; });
 
-    if (labResult.error || weeklyResult.error || taskResult.error) {
-      const error = labResult.error || weeklyResult.error || taskResult.error;
+    if (failedLabResult || weeklyResult.error || taskResult.error) {
+      const error = (failedLabResult && failedLabResult.error) || weeklyResult.error || taskResult.error;
       setDashboardMessage("Dashboard could not be loaded: " + error.message, true);
       setWeeklyDashboardMessage("Weekly dashboard could not be loaded: " + error.message, true);
       return;
     }
 
-    state.dashboardRows = labResult.data || [];
+    state.dashboardRowsByLab.clear();
+    state.trackedLabs.forEach(function (definition, index) {
+      state.dashboardRowsByLab.set(definition.labId, labResults[index].data || []);
+    });
+    if (!state.dashboardRowsByLab.has(state.dashboardLabId)) {
+      state.dashboardLabId = state.trackedLabs[0] ? state.trackedLabs[0].labId : "";
+    }
+    document.getElementById("dashboard-lab-select").value = state.dashboardLabId;
+    state.dashboardRows = state.dashboardRowsByLab.get(state.dashboardLabId) || [];
     state.dashboardLoaded = true;
     state.weeklyDashboardRows = weeklyResult.data || [];
     state.weeklyDashboardLoaded = true;
@@ -8530,19 +9200,38 @@ window.LAB_PROGRESS_CONFIG = {
     renderWeeklyDashboardRows();
   }
 
+  function currentDashboardDefinition() {
+    return state.trackedLabs.find(function (definition) {
+      return definition.labId === state.dashboardLabId;
+    }) || state.trackedLabs[0] || null;
+  }
+
+  function dashboardCompletedIds(record, definition) {
+    const savedIds = new Set(
+      Array.isArray(record.completed_task_ids)
+        ? record.completed_task_ids.filter(Boolean)
+        : []
+    );
+    return definition.items
+      .map(function (item) { return item.taskId; })
+      .filter(function (taskId) { return savedIds.has(taskId); });
+  }
+
   function filteredDashboardRows() {
     const query = document.getElementById("dashboard-search").value.trim().toLowerCase();
     const filter = document.getElementById("dashboard-filter").value;
+    const definition = currentDashboardDefinition();
+    const total = definition ? definition.items.length : 0;
 
     return state.dashboardRows.filter(function (row) {
-      const count = Number(row.completed_count || 0);
+      const count = definition ? dashboardCompletedIds(row, definition).length : 0;
       const searchable = [row.roll_number, row.full_name, row.email].join(" ").toLowerCase();
       const matchesQuery = !query || searchable.includes(query);
       const matchesFilter =
         filter === "all" ||
         (filter === "not-started" && count === 0) ||
-        (filter === "in-progress" && count > 0 && count < TASK_COUNT) ||
-        (filter === "complete" && count === TASK_COUNT);
+        (filter === "in-progress" && count > 0 && count < total) ||
+        (filter === "complete" && total > 0 && count === total);
       return matchesQuery && matchesFilter;
     });
   }
@@ -8550,8 +9239,14 @@ window.LAB_PROGRESS_CONFIG = {
   function renderDashboardRows() {
     const body = document.getElementById("dashboard-progress-body");
     if (!state.dashboardLoaded) return;
+    const definition = currentDashboardDefinition();
+    if (!definition) return;
+    const total = definition.items.length;
     const rows = filteredDashboardRows();
     body.replaceChildren();
+
+    document.getElementById("dashboard-lab-title").textContent =
+      definition.label + " " + definition.itemLabel + " progress";
 
     if (!rows.length) {
       const row = body.insertRow();
@@ -8561,9 +9256,9 @@ window.LAB_PROGRESS_CONFIG = {
     }
 
     rows.forEach(function (record) {
-      const count = Number(record.completed_count || 0);
-      const percent = Math.round((count / TASK_COUNT) * 100);
-      const completedIds = new Set(Array.isArray(record.completed_task_ids) ? record.completed_task_ids : []);
+      const completedIds = new Set(dashboardCompletedIds(record, definition));
+      const count = completedIds.size;
+      const percent = total ? Math.round((count / total) * 100) : 0;
       const row = body.insertRow();
 
       addTextCell(row, record.roll_number || "—");
@@ -8580,14 +9275,15 @@ window.LAB_PROGRESS_CONFIG = {
       const tasksCell = row.insertCell();
       const dots = document.createElement("div");
       dots.className = "dashboard-task-dots";
-      dots.setAttribute("aria-label", count + " of " + TASK_COUNT + " tasks complete");
-      for (let index = 1; index <= TASK_COUNT; index += 1) {
+      dots.setAttribute("aria-label", count + " of " + total + " " + definition.itemLabel + " complete");
+      definition.items.forEach(function (item, index) {
         const dot = document.createElement("span");
         dot.className = "dashboard-task-dot";
-        if (completedIds.has(TASK_ID_PREFIX + index)) dot.classList.add("is-complete");
-        dot.textContent = index;
+        if (completedIds.has(item.taskId)) dot.classList.add("is-complete");
+        dot.textContent = index + 1;
+        dot.title = item.title + ": " + (completedIds.has(item.taskId) ? "complete" : "not complete");
         dots.appendChild(dot);
-      }
+      });
       tasksCell.appendChild(dots);
 
       const progressCell = row.insertCell();
@@ -8729,17 +9425,25 @@ window.LAB_PROGRESS_CONFIG = {
   }
 
   function renderDashboardMetrics() {
+    const definition = currentDashboardDefinition();
+    const total = definition ? definition.items.length : 0;
     const studentCount = state.dashboardRows.length;
     const totalCompleted = state.dashboardRows.reduce(function (sum, row) {
-      return sum + Number(row.completed_count || 0);
+      return sum + (definition ? dashboardCompletedIds(row, definition).length : 0);
     }, 0);
     const completeCount = state.dashboardRows.filter(function (row) {
-      return Number(row.completed_count || 0) === TASK_COUNT;
+      return total > 0 && dashboardCompletedIds(row, definition).length === total;
     }).length;
-    const average = studentCount ? Math.round((totalCompleted / (studentCount * TASK_COUNT)) * 100) : 0;
+    const average = studentCount && total
+      ? Math.round((totalCompleted / (studentCount * total)) * 100)
+      : 0;
     document.getElementById("dashboard-student-count").textContent = String(studentCount);
     document.getElementById("dashboard-class-average").textContent = average + "%";
     document.getElementById("dashboard-complete-count").textContent = String(completeCount);
+    document.getElementById("dashboard-class-average-label").textContent =
+      definition ? definition.label + " class average" : "Selected lab average";
+    document.getElementById("dashboard-complete-count-label").textContent =
+      definition ? "Completed " + definition.label : "Completed selected lab";
 
     const weeklyStudentCount = state.weeklyDashboardRows.length;
     const weeklyTotal = state.weeklyTasks.length;
@@ -8781,23 +9485,26 @@ window.LAB_PROGRESS_CONFIG = {
 
   function downloadProgressCsv() {
     if (!state.dashboardLoaded) return;
-    const header = ["roll_number", "full_name", "email", "account_status", "completed_tasks", "total_tasks", "progress_percent", "last_update"];
+    const definition = currentDashboardDefinition();
+    if (!definition) return;
+    const total = definition.items.length;
+    const header = ["roll_number", "full_name", "email", "account_status", "completed_activities", "total_activities", "progress_percent", "last_update"];
     const lines = [header.join(",")];
     state.dashboardRows.forEach(function (row) {
-      const count = Number(row.completed_count || 0);
+      const count = dashboardCompletedIds(row, definition).length;
       const values = [
         row.roll_number,
         row.full_name,
         row.email,
         row.activated ? "Activated" : "Not activated",
         count,
-        TASK_COUNT,
-        Math.round((count / TASK_COUNT) * 100),
+        total,
+        total ? Math.round((count / total) * 100) : 0,
         row.last_update || ""
       ];
       lines.push(values.map(csvEscape).join(","));
     });
-    downloadTextFile("lab-1-progress.csv", lines.join("\n"), "text/csv;charset=utf-8");
+    downloadTextFile(definition.labId + "-progress.csv", lines.join("\n"), "text/csv;charset=utf-8");
   }
 
   function downloadWeeklyProgressCsv() {
